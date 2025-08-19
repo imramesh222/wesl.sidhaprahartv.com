@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container py-5">
+    <h1 class="display-3 text-white animated slideInRight">Publication</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb animated slideInRight mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Publication</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container py-5">
+    {% if notices %}
+    <div class="list-group">
+        {% for notice in notices %}
+        <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ notice.title }}</h5>
+                <small>{{ notice.published_at|date:"M d, Y" }}</small>
+            </div>
+            <p>{{ notice.content }}</p>
+            {% if notice.attachment %}
+            <p><a href="{{ notice.attachment.url }}" target="_blank" download>Download Attachment</a></p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No Publication available at the moment.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

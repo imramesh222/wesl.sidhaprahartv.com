@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <!-- Main Project Detail -->
+    <div class="col-lg-8">
+      <h1 class="mb-2">{{ project.title }}</h1>
+
+      {% if project.short_description %}
+        <p class="text-muted fst-italic mb-1">{{ project.short_description }}</p>
+      {% endif %}
+
+      <p>
+        <span class="badge 
+          {% if project.status == 'ongoing' %}bg-warning text-dark
+          {% elif project.status == 'completed' %}bg-success
+          {% else %}bg-secondary
+          {% endif %}">
+          {{ project.get_status_display }}
+        </span>
+      </p>
+
+      {% if project.image %}
+        <img 
+          src="{{ project.image.url }}" 
+          class="img-fluid rounded mb-4" 
+          alt="{{ project.title }}" 
+          style="max-height: 450px; object-fit: cover; width: 100%;">
+      {% endif %}
+
+      <p class="lead">{{ project.description }}</p>
+    </div>
+
+    <!-- Related Projects Sidebar -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Related News</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for related in related_projects %}
+            <li class="list-group-item">
+              <a href="{% url 'project_detail' related.slug %}" class="text-decoration-none text-dark d-block py-2">
+                <strong>{{ related.title }}</strong><br>
+                <small class="text-muted">{{ related.description|truncatewords:15 }}</small>
+              </a>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">No related News found.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

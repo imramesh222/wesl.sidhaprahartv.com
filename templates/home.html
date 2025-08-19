@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Hydropower{% endblock %}
+
+{% block content %}
+<!-- Carousel Start -->
+<div class="container-fluid px-0 mb-5">
+  <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for item in carousel_items %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img class="w-100 d-block" src="{{ item.image.url }}" alt="Image"
+          style="height: 600px; object-fit: cover; width: 100%;" loading="lazy">
+        <div class="carousel-caption">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-10 text-start">
+
+                <h1 class="display-1 text-white mb-5 animated slideInRight">{{ item.title }}</h1>
+                <p class="fs-5 fw-medium text-uppercase animated slideInRight" style="color: #e41318;">{{ item.subtitle
+                  }}</p>
+                {% if item.button_text %}
+                <a href="{{ item.button_link }}" class="btn btn-danger py-3 px-5 animated slideInRight">{{
+                  item.button_text }}</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+<!-- Carousel End -->
+
+<!-- About Section -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center wow fadeInUp" data-wow-delay="0.1s">
+      <!-- Single Image -->
+      <div class="col-lg-6 mx-auto">
+        <div class="overflow-hidden rounded shadow-sm">
+          <img src="{{ about_images.0.image.url }}" class="w-100 h-auto object-fit-cover" alt="About Image"
+            style="max-height: 450px;">
+        </div>
+      </div>
+
+      <!-- Text Content -->
+      <div class="col-lg-6">
+        <p class="fw-medium text-uppercase text-danger mb-2">About Us</p>
+        <h1 class="display-5 mb-3">{{ about_info.heading }}</h1>
+        <!-- <h4 class="text-secondary mb-4">Our Mission & Vision</h4> -->
+        <p class="mb-4" style="text-align: justify; text-align-last: justify; hyphens: auto; word-spacing: -0.05em;">
+          {{ about_info.description|truncatewords:150 }}
+          <a href="{% url 'about' %}#about" class="text-primary text-decoration-none">Read More</a>
+        </p>
+
+
+      </div>
+    </div>
+  </div>
+  {% include "coverage.html" %}
+
+</div>
+<!-- About End -->
+
+<!-- Coverage Start< -->
+
+<!-- Coverage End -->
+
+
+
+<!-- Notices Section -->
+<div class="container-xxl py-5" style="background-color:whitesmoke;">
+  <div class="container">
+    <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+      <p class="fw-medium text-uppercase mb-2" style="color: #e41318;">Publication</p>
+      <h1 class="display-5 mb-5">Stay Updated</h1>
+    </div>
+
+    {% if notices %}
+    <div class="row g-4 justify-content-center">
+      {% for notice in notices %}
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+        <div class="notice-card h-100">
+          <div class="notice-header">
+            <div class="notice-date">
+              <span class="day">{{ notice.published_at|date:"d" }}</span>
+              <span class="month">{{ notice.published_at|date:"M" }}</span>
+            </div>
+            <h5 class="notice-title">{{ notice.title }}</h5>
+          </div>
+          <div class="notice-body">
+            <p>{{ notice.content|truncatechars:120 }}</p>
+            {% if notice.attachment %}
+            <div class="notice-footer">
+              <a href="{{ notice.attachment.url }}" class="btn btn-sm btn-danger" download>
+                <i class="fas fa-download me-2"></i>Download
+              </a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-4">
+      <p class="text-muted">No Publication available at the moment.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<!-- Notices End -->
+
+
+<!-- Clients Section -->
+<div class="container-xxl py-5">
+  <div class="container text-center">
+    <p class="fw-medium text-uppercase text-danger mb-2">Our Clients & Partners</p>
+    <h1 class="display-5 mb-5">Trusted By</h1>
+    <div class="row g-4 justify-content-center align-items-center">
+      {% for client in clients %}
+      <div class="col-6 col-md-3 d-flex justify-content-center align-items-center">
+        {% if client.website %}
+        <a href="{{ client.website }}" target="_blank" rel="noopener" class="d-block"
+          style="max-height: 100px; max-width: 180px;">
+          <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid grayscale-hover"
+            style="max-height: 100px; width: auto;" loading="lazy">
+        </a>
+        {% else %}
+        <div style="max-height: 100px; max-width: 180px;">
+          <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="img-fluid grayscale-hover"
+            style="max-height: 100px; width: auto;" loading="lazy">
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- Clients End -->
+<style>
+  /* Notice Cards */
+  .notice-card {
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .notice-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .notice-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .notice-date {
+    background: white;
+    color: #1e3c72;
+    border-radius: 6px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: bold;
+  }
+
+  .notice-date .day {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .notice-date .month {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .notice-title {
+    margin: 0;
+    font-size: 1.1rem;
+    flex-grow: 1;
+    color: #fff;
+  }
+
+  .notice-body {
+    padding: 20px;
+  }
+
+  .notice-body p {
+    color: #555;
+    margin-bottom: 15px;
+  }
+
+  .notice-footer {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+  }
+
+  @media (max-width: 767.98px) {
+    .notice-header {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .notice-date {
+      margin-bottom: 15px;
+    }
+  }
+</style>
+<!-- Clients Section -->
+<!--<div class="container-xxl py-5">-->
+<!--  <div class="container text-center">-->
+<!--    <p class="fw-medium text-uppercase text-danger mb-2">Our Clients & Partners</p>-->
+<!--    <h1 class="display-5 mb-5">Trusted By</h1>-->
+<!--    <div class="row g-4 justify-content-center align-items-center">-->
+<!--      {% for client in clients %}-->
+<!--      <div class="col-6 col-md-3 d-flex justify-content-center align-items-center">-->
+<!--        {% if client.website %}-->
+<!--          <a href="{{ client.website }}" target="_blank" rel="noopener" class="d-block" style="max-height: 100px; max-width: 180px;">-->
+<!--            <img -->
+<!--              src="{{ client.logo.url }}" -->
+<!--              alt="{{ client.name }}" -->
+<!--              class="img-fluid grayscale-hover" -->
+<!--              style="max-height: 100px; width: auto;"-->
+<!--              loading="lazy"-->
+<!--            >-->
+<!--          </a>-->
+<!--        {% else %}-->
+<!--          <div style="max-height: 100px; max-width: 180px;">-->
+<!--            <img -->
+<!--              src="{{ client.logo.url }}" -->
+<!--              alt="{{ client.name }}" -->
+<!--              class="img-fluid grayscale-hover" -->
+<!--              style="max-height: 100px; width: auto;"-->
+<!--              loading="lazy"-->
+<!--            >-->
+<!--          </div>-->
+<!--        {% endif %}-->
+<!--      </div>-->
+<!--      {% endfor %}-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!-- Clients End -->
+
+<style>
+  .grayscale-hover {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  }
+
+  .grayscale-hover:hover {
+    filter: grayscale(0%);
+  }
+</style>
+
+{% endblock %}
