@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{% if org_details %}{{ org_details.site_title }}{% else %}Hydropower Website{% endif %}{% endblock %}</title>
@@ -8,11 +9,12 @@
 
     <!-- Favicon -->
 
-
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -30,308 +32,587 @@
 
     <style>
         .whatsapp-float {
-        position: fixed;
-        bottom: 95px;
-        right: 30px;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: fixed;
+            bottom: 95px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .whatsapp-float:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
         }
 
         .whatsapp-float i {
-        font-size: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Notice Carousel */
+        .notice-container {
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .notice-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(-100%);
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 15px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .notice-item a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            transition: all 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .notice-item a:hover {
+            color: #ffc107;
+            text-decoration: none;
+        }
+
+        .notice-item i {
+            margin-right: 8px;
+        }
+
+        .notice-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100%); }
+        }
+
+        @media (max-width: 991.98px) {
+            .notice-item {
+                font-size: 0.9rem;
+                white-space: normal;
+                text-align: center;
+            }
+
+            .bg-danger>div {
+                transform: none !important;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .bg-danger span,
+            .bg-danger i {
+                transform: none !important;
+                display: inline-block;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color:#e41318 ;"></div>
-</div>
-<!-- Spinner End -->
-
-<!-- Topbar Start -->
-<div class="container-fluid bg-dark px-0">
-    <div class="row g-0 d-none d-lg-flex">
-        <div class="col-lg-6 ps-5 text-start">
-            <div class="h-100 d-inline-flex align-items-center text-white">
-                <span>Follow Us:</span>
-                {% if org_details.facebook %}<a class="btn btn-link text-light" href="{{ org_details.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
-                {% if org_details.twitter %}<a class="btn btn-link text-light" href="{{ org_details.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
-                {% if org_details.linkedin %}<a class="btn btn-link text-light" href="{{ org_details.linkedin }}"><i class="fab fa-linkedin-in"></i></a>{% endif %}
-                {% if org_details.instagram %}<a class="btn btn-link text-light" href="{{ org_details.instagram }}"><i class="fab fa-instagram"></i></a>{% endif %}
-           
-            </div>
-        </div>
-        <div class="col-lg-6 text-end">
-            <div class="h-100 topbar-right d-inline-flex align-items-center text-white py-2 px-5">
-                <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span>
-                <span class="fs-5 fw-bold">{{ org_details.phone }}</span>
-            </div>
-        </div>
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color:#e41318 ;"></div>
     </div>
-</div>
-<!-- Topbar End -->
+    <!-- Spinner End -->
 
-<!-- Desktop Header Start -->
-<div class="container-fluid bg-white px-0 d-none d-lg-block">
-<div class="container">
-    <div class="row py-2">
-        <div class="d-flex justify-content-between align-items-center w-100">
-
-            <!-- Logo Section - Left Start -->
-            <div class="d-flex align-items-centre">
-                {% if org_details.logo %}
-                    <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img" style="max-height: 95px;" >
-                {% else %}
-                    <div class="logo-circle bg-danger d-inline-flex align-items-center justify-content-centre">
-                        <span class="text-white fw-bold fs-3">
-                            {% if org_details %}{{ org_details.site_title }}{% else %}HandsNepal{% endif %}
-                        </span>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Stock Price & Admin Section - Right End -->
-            <div class="text-end">
-                <div class="bg-light text-dark p-2 rounded mb-2 text-nowrap">
-                    <div class="fw-bold small">Kathmandu Local Time</div>
-                    <div id="nepal-time" class="fs-6" style="text-align: center;">--:--:--</div>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-0">
+        <div class="row g-0 ">
+            <!-- Follow Us - Hidden on mobile, shows on lg and up -->
+            <div class="col-12 col-lg-2 ps-3 ps-lg-5 text-start d-none d-lg-flex py-1">
+                <div class="h-100 d-inline-flex align-items-center text-white">
+                    <span class="d-none d-xl-inline">Follow Us:</span>
+                    {% if org_details.facebook %}<a class="btn btn-link text-light p-1"
+                        href="{{ org_details.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                    {% if org_details.twitter %}<a class="btn btn-link text-light p-1"
+                        href="{{ org_details.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
+                    {% if org_details.linkedin %}<a class="btn btn-link text-light p-1"
+                        href="{{ org_details.linkedin }}"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                    {% if org_details.instagram %}<a class="btn btn-link text-light p-1"
+                        href="{{ org_details.instagram }}"><i class="fab fa-instagram"></i></a>{% endif %}
                 </div>
-
-                <div class="admin-links">
-                    <small class="text-muted">
-                        <a href="{% url 'dashboard_home' %}" class="text-decoration-none text-muted">Admin Login | Dashboard</a>
-                    </small>
-                   
-                </div>
-
             </div>
 
-        </div>
-    </div>
-</div>
-
-</div>
-<!-- Desktop Header End -->
-
-<!-- Desktop Navigation Start -->
-<div class="container-fluid sticky-top px-0 d-none d-lg-block" style="background-color: #e41318;">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark px-0 py-0" style="background-color: #e41318;">
-            <div class="navbar-nav mx-auto">
-                <a href="{% url 'home' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">About Us</a>
-                <a href="{% url 'key_info_view' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">What We Do</a>
-                <a href="{% url 'projects' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">News</a>
-                <a href="{% url 'reports' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Reports</a>
-                <a href="{% url 'video' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Video</a>
-                <a href="{% url 'photo' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Photo</a>
-                <a href="{% url 'notice' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Publication</a>
-                <a href="{% url 'contact' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Contact</a>
-            
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Desktop Navigation End -->
-
-<!-- Mobile Navbar Start -->
-<div class="container-fluid bg-white sticky-top px-0 d-lg-none">
-    <div class="container px-0">
-        <!-- Mobile Layout (logo and toggle in same line) -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white px-0 py-3">
-            <!-- Logo -->
-                    {% if org_details.logo %}
-                       <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img" style="max-height: 65px; max-width:260px;">
-
-                    {% else %}
-                        <div class="logo-circle d-inline-flex align-items-center justify-content-center" style="background-color: #e41318;">
-                            <span class="text-white fw-bold fs-3">{% if org_details %}{{ org_details.site_title }}{% else %}Hydropower{% endif %}</span>
+            <!-- Notice Section - Full width on mobile, 7 columns on lg+ -->
+            <div class="col-12 col-lg-7 px-3 px-lg-0 py-1">
+                <div class="h-100 d-flex align-items-center justify-content-center py-1 py-lg-0 ">
+                    <div class="notice-container w-100 bg-dark" id="noticeContainer">
+                        <!-- Loading placeholder -->
+                        <div class="notice-item">
+                            <span><i class="fa fa-spinner fa-spin me-2"></i>Loading notices...</span>
                         </div>
-                    {% endif %}
-                        <!-- Toggle Button -->
-                        <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-        </nav>
-
-        <!-- Mobile Collapsible Content -->
-        <div class="collapse navbar-collapse px-0" id="navbarCollapse">
-            <div class="navbar-nav bg-light">
-                <a href="{% url 'home' %}" class="nav-item nav-link ps-3">Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link ps-3">About</a>
-                <a href="{% url 'services' %}" class="nav-item nav-link ps-3">Services</a>
-                <a href="{% url 'projects' %}" class="nav-item nav-link ps-3">Projects</a>
-                <a href="{% url 'reports' %}" class="nav-item nav-link ps-3">Reports</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle ps-3" data-bs-toggle="dropdown">Resources</a>
-                    <div class="dropdown-menu bg-light m-0">
-                        <a href="{% url 'downloads' %}" class="dropdown-item ps-4">Downloads</a>
-                        <a href="{% url 'notice' %}" class="dropdown-item ps-4">Notice</a>
                     </div>
                 </div>
-                <a href="{% url 'contact' %}" class="nav-item nav-link ps-3">Contact</a>
+            </div>
+
+            <!-- Phone Section - 3 columns on lg+ -->
+            <div class="col-12 col-lg-3 text-center text-lg-center p-0 ">
+                <div class="h-100 d-flex align-items-center justify-content-center text-white" style="
+                background-color: #dc3545;
+                transform: skewX(-20deg);
+                transform-origin: top right;
+                padding-left: 30px;
+                padding-right: 20px;
+                margin-right: -20px;
+                width: calc(100% + 20px);
+            ">
+                    <div class="d-inline-flex align-items-center" style="transform: skewX(20deg);">
+                        <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span>
+                        <span class="fs-5 fw-bold">{{ org_details.phone }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Mobile Navbar End -->
+    <!-- Topbar End -->
 
+    <!-- Desktop Header Start -->
+    <div class="container-fluid bg-white px-0 d-none d-lg-block">
+        <div class="container">
+            <div class="row py-2">
+                <div class="d-flex justify-content-between align-items-center w-100">
 
+                    <!-- Logo Section - Left Start -->
+                    <div class="d-flex align-items-centre">
+                        {% if org_details.logo %}
+                        <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img"
+                            style="max-height: 95px;">
+                        {% else %}
+                        <div class="logo-circle bg-danger d-inline-flex align-items-center justify-content-centre">
+                            <span class="text-white fw-bold fs-3">
+                                {% if org_details %}{{ org_details.site_title }}{% else %}HandsNepal{% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
 
+                    <!-- Stock Price & Admin Section - Right End -->
+                    <div class="text-end">
+                        <div class="bg-light text-dark p-2 rounded mb-2 text-nowrap">
+                            <div class="fw-bold small">Kathmandu Local Time</div>
+                            <div id="nepal-time" class="fs-6" style="text-align: center;">--:--:--</div>
+                        </div>
 
-<!-- Main Content -->
-{% block content %}
-{% endblock %}
-<!-- Main Content End -->
+                        <div class="admin-links">
+                            <small class="text-muted">
+                                <a href="{% url 'dashboard_home' %}" class="text-decoration-none text-muted">Admin
+                                    Login | Dashboard</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Desktop Header End -->
 
-<!-- WhatsApp Button -->
-<!--{% if org_details.whatsapp_number %}-->
-<!--<a href="https://wa.me/{{ org_details.whatsapp_number|cut:" "|cut:"+"|cut:"-" }}" class="btn btn-lg btn-success btn-lg-square rounded-circle whatsapp-float" target="_blank" rel="noopener noreferrer">-->
-<!--    <i class="fab fa-whatsapp"></i>-->
-<!--</a>-->
-<!--{% endif %}-->
+    <!-- Desktop Navigation Start -->
+    <div class="container-fluid sticky-top px-0 d-none d-lg-block" style="background-color: #e41318;">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark px-0 py-0" style="background-color: #e41318;">
+                <div class="navbar-nav mx-auto">
+                    <a href="{% url 'home' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">About Us</a>
+                    <a href="{% url 'key_info_view' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">What
+                        We Do</a>
+                    <a href="{% url 'projects' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">News</a>
+                    <a href="{% url 'reports' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Reports</a>
+                    <a href="{% url 'video' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Video</a>
+                    <a href="{% url 'photo' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Photo</a>
+                    <a href="{% url 'notice' %}"
+                        class="nav-item nav-link px-3 py-3 text-white fw-bold">Publication</a>
+                    <a href="{% url 'contact' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Desktop Navigation End -->
 
-<!-- Footer Start -->
-<div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-        <div class="row g-5">
-            <div class="col-lg-3 col-md-6">
-                <div class="d-flex align-items-center mb-4">
-                    {% if org_details.logo %}
-                        <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img" style="max-height: 110px;">
-                    {% else %}
-                        <div class="logo-circle bg-danger d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 80px; height: 80px;">
+    <!-- Mobile Navbar Start -->
+    <div class="container-fluid bg-white sticky-top px-0 d-lg-none">
+        <div class="container px-0">
+            <!-- Mobile Layout (logo and toggle in same line) -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white px-0 py-3">
+                <!-- Logo -->
+                {% if org_details.logo %}
+                <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img"
+                    style="max-height: 65px; max-width:260px;">
+
+                {% else %}
+                <div class="logo-circle d-inline-flex align-items-center justify-content-center"
+                    style="background-color: #e41318;">
+                    <span class="text-white fw-bold fs-3">{% if org_details %}{{ org_details.site_title }}{% else
+                        %}Hydropower{% endif %}</span>
+                </div>
+                {% endif %}
+                <!-- Toggle Button -->
+                <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+
+            <!-- Mobile Collapsible Content -->
+            <div class="collapse navbar-collapse px-0" id="navbarCollapse">
+                <div class="navbar-nav bg-light">
+                    <a href="{% url 'home' %}" class="nav-item nav-link ps-3">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link ps-3">About</a>
+                    <a href="{% url 'services' %}" class="nav-item nav-link ps-3">Services</a>
+                    <a href="{% url 'projects' %}" class="nav-item nav-link ps-3">Projects</a>
+                    <a href="{% url 'reports' %}" class="nav-item nav-link ps-3">Reports</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle ps-3" data-bs-toggle="dropdown">Resources</a>
+                        <div class="dropdown-menu bg-light m-0">
+                            <a href="{% url 'downloads' %}" class="dropdown-item ps-4">Downloads</a>
+                            <a href="{% url 'notice' %}" class="dropdown-item ps-4">Notice</a>
+                        </div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="nav-item nav-link ps-3">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Navbar End -->
+
+    <!-- Main Content -->
+    {% block content %}
+    {% endblock %}
+    <!-- Main Content End -->
+
+    <!-- WhatsApp Button -->
+    <!--{% if org_details.whatsapp_number %}-->
+    <!--<a href="https://wa.me/{{ org_details.whatsapp_number|cut:" "|cut:"+"|cut:"-" }}" class="btn btn-lg btn-success btn-lg-square rounded-circle whatsapp-float" target="_blank" rel="noopener noreferrer">-->
+    <!--    <i class="fab fa-whatsapp"></i>-->
+    <!--</a>-->
+    <!--{% endif %}-->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex align-items-center mb-4">
+                        {% if org_details.logo %}
+                        <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img"
+                            style="max-height: 110px;">
+                        {% else %}
+                        <div class="logo-circle bg-danger d-inline-flex align-items-center justify-content-center rounded-circle"
+                            style="width: 80px; height: 80px;">
                             <span class="text-white fw-bold fs-3 text-center w-100">
                                 {% if org_details %}{{ org_details.site_title|slice:":1" }}{% else %}H{% endif %}
                             </span>
                         </div>
+                        {% endif %}
+                    </div>
+
+                    {% if org_details.address %}
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</p>
+                    {% endif %}
+                    {% if org_details.phone %}
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ org_details.phone }}</p>
+                    {% endif %}
+                    {% if org_details.email %}
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ org_details.email }}</p>
                     {% endif %}
                 </div>
-                
-                {% if org_details.address %}
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</p>
-                {% endif %}
-                {% if org_details.phone %}
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ org_details.phone }}</p>
-                {% endif %}
-                {% if org_details.email %}
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ org_details.email }}</p>
-                {% endif %}
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
+                    <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
+                    <a class="btn btn-link" href="{% url 'services' %}">Services</a>
+                    <a class="btn btn-link" href="{% url 'notice' %}">Notice</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Business Hours</h5>
+                    <p class="mb-1">Sunday - Friday</p>
+                    {% if org_details.weekday_hours %}
+                    <h6 class="text-light">{{ org_details.weekday_hours }}</h6>
+                    {% endif %}
+                    <p class="mb-1">Saturday</p>
+                    {% if org_details.saturday_hours %}
+                    <h6 class="text-light">{{ org_details.saturday_hours }}</h6>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Newsletter</h5>
+                    <p>Stay updated with the latest HandsNepal news and reports.</p>
+                    <form method="post" action="{% url 'subscribe_newsletter' %}">
+                        {% csrf_token %}
+                        <div class="position-relative w-100">
+                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" name="email"
+                                type="email" placeholder="Your email" required>
+                            <button type="submit" class="btn py-2 position-absolute top-0 end-0 mt-2 me-2"
+                                style="background-color: #e41318; color: white;">SignUp</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-white mb-4">Quick Links</h5>
-                <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
-                <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
-                <a class="btn btn-link" href="{% url 'services' %}">Services</a>
-                <a class="btn btn-link" href="{% url 'notice' %}">Notice</a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-white mb-4">Business Hours</h5>
-                <p class="mb-1">Sunday - Friday</p>
-                {% if org_details.weekday_hours %}
-                <h6 class="text-light">{{ org_details.weekday_hours }}</h6>
-                {% endif %}
-                <p class="mb-1">Saturday</p>
-                {% if org_details.saturday_hours %}
-                <h6 class="text-light">{{ org_details.saturday_hours }}</h6>
-                {% endif %}
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-white mb-4">Newsletter</h5>
-                <p>Stay updated with the latest HandsNepal news and reports.</p>
-                <form method="post" action="{% url 'subscribe_newsletter' %}">
-                    {% csrf_token %}
-                    <div class="position-relative w-100">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" name="email" type="email" placeholder="Your email" required>
-                        <button type="submit" class="btn py-2 position-absolute top-0 end-0 mt-2 me-2" style="background-color: #e41318; color: white;">SignUp</button>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Copyright -->
+    <div class="container-fluid copyright bg-dark py-4">
+        <div class="container text-center">
+            <p class="mb-2">© <a class="fw-semi-bold" style="color:white" href="#">{% if org_details %}{{
+                    org_details.site_title }}{% else %}HandsNepal{% endif %}</a>. All Rights Reserved.</p>
+            <p class="mb-0">Design by <a class="fw-semi-bold" style="color:white" href="https://www.kitwosd.com/"
+                    target="_blank" rel="noopener noreferrer">Kitwosd IT Support Center</a></p>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top"
+        style="background-color: #e41318; color: white;"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- Toast Message Container -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 9999;">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="toast align-items-center text-white bg-{{ message.tags|default:'danger' }} border-0"
+                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
                     </div>
-                </form>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
             </div>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
-</div>
-<!-- Footer End -->
 
-<!-- Copyright -->
-<div class="container-fluid copyright bg-dark py-4">
-    <div class="container text-center">
-        <p class="mb-2">© <a class="fw-semi-bold" style="color:white" href="#">{% if org_details %}{{ org_details.site_title }}{% else %}HandsNepal{% endif %}</a>. All Rights Reserved.</p>
-        <p class="mb-0">Design by <a class="fw-semi-bold" style="color:white" href="https://www.kitwosd.com/" target="_blank" rel="noopener noreferrer">Kitwosd IT Support Center</a></p>
-    </div>
-</div>
+    <!-- JS Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
 
-<!-- Back to Top Button -->
-<a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top" style="background-color: #e41318; color: white;"><i class="bi bi-arrow-up"></i></a>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
 
-<!-- Toast Message Container -->
-<div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 9999;">
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="toast align-items-center text-white bg-{{ message.tags|default:' #e41318' }} border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
-          <div class="d-flex">
-            <div class="toast-body">
-              {{ message }}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
-      {% endfor %}
-    {% endif %}
-  </div>
-</div>
+    <!-- Notice Rotation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const noticeContainer = document.querySelector('.notice-container');
+            const noticeItems = document.querySelectorAll('.notice-item');
+            let currentIndex = 0;
 
-<!-- JS Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'lib/wow/wow.min.js' %}"></script>
-<script src="{% static 'lib/easing/easing.min.js' %}"></script>
-<script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-<script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-<script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+            // Show first notice
+            if (noticeItems.length > 0) {
+                noticeItems[0].classList.add('active');
+            }
 
-<!-- Custom JS -->
-<script src="{% static 'js/main.js' %}"></script>
+            function showNextNotice() {
+                if (noticeItems.length <= 1) return;
 
-<!-- Toast Trigger Script -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toasts = document.querySelectorAll('.toast');
-    toasts.forEach(toastEl => new bootstrap.Toast(toastEl).show());
-  });
-</script>
-<script>
-  function updateNepalTime() {
-    const now = new Date();
+                const currentNotice = noticeItems[currentIndex];
+                currentNotice.classList.remove('active');
+                currentNotice.style.transform = 'translateX(-100%)';
+                currentNotice.style.opacity = '0';
 
-    // Nepal is UTC +5:45
-    const nepalOffsetMinutes = 5.75 * 60; // 5 hours 45 minutes in minutes
-    const localOffsetMinutes = now.getTimezoneOffset(); // current timezone offset from UTC
-    const totalOffset = (nepalOffsetMinutes + localOffsetMinutes) * 60000; // convert to milliseconds
+                // Move to next notice
+                currentIndex = (currentIndex + 1) % noticeItems.length;
+                const nextNotice = noticeItems[currentIndex];
 
-    const nepalTime = new Date(now.getTime() + totalOffset);
+                // Position next notice to the right before animating in
+                nextNotice.style.transform = 'translateX(100%)';
+                nextNotice.style.opacity = '0';
 
-    const hours = String(nepalTime.getHours()).padStart(2, '0');
-    const minutes = String(nepalTime.getMinutes()).padStart(2, '0');
-    const seconds = String(nepalTime.getSeconds()).padStart(2, '0');
+                // Trigger reflow
+                void nextNotice.offsetWidth;
 
-    document.getElementById('nepal-time').textContent = `${hours}:${minutes}:${seconds}`;
-  }
+                // Animate in the next notice
+                nextNotice.style.transform = 'translateX(0)';
+                nextNotice.style.opacity = '1';
+                nextNotice.classList.add('active');
+            }
+        });
+    </script>
 
-  setInterval(updateNepalTime, 1000);
-  updateNepalTime(); // Initial call
-</script>
+    <!-- Notice Loading Script -->
+    <script>
+        // Function to fetch and display notices
+        function loadNotices() {
+            console.log('loadNotices() called');
+            const noticeContainer = document.getElementById('noticeContainer');
+            console.log('Notice container:', noticeContainer);
+            if (!noticeContainer) {
+                console.error('Notice container not found');
+                return;
+            }
+
+            // Show loading message
+            noticeContainer.innerHTML = `
+                <div class="notice-item active">
+                    <span><i class="fas fa-spinner fa-spin me-2"></i>Loading notices...</span>
+                </div>
+            `;
+
+            console.log('Fetching notices from /api/notices/');
+            fetch('/api/notices/')
+                .then(response => {
+                    console.log('API response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(notices => {
+                    console.log('Received notices:', notices);
+                    // Clear loading message
+                    noticeContainer.innerHTML = '';
+
+                    if (notices && notices.length > 0) {
+                        // Add each notice to the container
+                        notices.forEach((notice, index) => {
+                            const noticeItem = document.createElement('div');
+                            noticeItem.className = 'notice-item' + (index === 0 ? ' active' : '');
+                            noticeItem.innerHTML = `
+                                <a href="/notice/#notice-${notice.id}" class="d-flex align-items-center justify-content-center w-100 h-100">
+                                    <i class="fas fa-bullhorn me-2"></i>
+                                    <span class="text-truncate">${notice.content}</span>
+                                </a>
+                            `;
+                            noticeContainer.appendChild(noticeItem);
+                        });
+
+                        // Start rotating notices if there are multiple
+                        if (notices.length > 1) {
+                            startNoticeRotation();
+                        }
+                    } else {
+                        // No notices available
+                        const noNotices = document.createElement('div');
+                        noNotices.className = 'notice-item active';
+                        noNotices.innerHTML = '<span>No notices available</span>';
+                        noticeContainer.appendChild(noNotices);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notices:', error);
+                    noticeContainer.innerHTML = `
+                        <div class="notice-item active">
+                            <span class="text-warning"><i class="fas fa-exclamation-triangle me-2"></i>Error loading notices</span>
+                        </div>
+                    `;
+                });
+        }
+
+        // Function to rotate notices
+        function startNoticeRotation() {
+            const noticeContainer = document.getElementById('noticeContainer');
+            const noticeItems = document.querySelectorAll('.notice-item');
+            if (noticeItems.length <= 1) return; // No need to rotate if only one item
+
+            let currentIndex = 0;
+            const rotationInterval = 5000; // 5 seconds
+            let rotationTimer = null;
+
+            function showNextNotice() {
+                // Get current and next indices
+                const nextIndex = (currentIndex + 1) % noticeItems.length;
+                
+                // Fade out current notice
+                noticeItems[currentIndex].classList.remove('active');
+                
+                // Fade in next notice
+                setTimeout(() => {
+                    noticeItems[nextIndex].classList.add('active');
+                    currentIndex = nextIndex;
+                }, 500); // Match this with the CSS transition duration
+            }
+
+            // Start the rotation
+            rotationTimer = setInterval(showNextNotice, rotationInterval);
+
+            // Pause rotation on hover
+            noticeContainer.addEventListener('mouseenter', () => {
+                if (rotationTimer) {
+                    clearInterval(rotationTimer);
+                    rotationTimer = null;
+                }
+            });
+
+            // Resume rotation when mouse leaves
+            noticeContainer.addEventListener('mouseleave', () => {
+                if (!rotationTimer) {
+                    rotationTimer = setInterval(showNextNotice, rotationInterval);
+                }
+            });
+        }
+
+        // Load notices when the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log('DOM fully loaded');
+            loadNotices();
+
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toastEl => new bootstrap.Toast(toastEl).show());
+        });
+    </script>
+
+    <!-- Nepal Time Script -->
+    <script>
+        function updateNepalTime() {
+            const now = new Date();
+
+            // Nepal is UTC +5:45
+            const nepalOffsetMinutes = 5.75 * 60; // 5 hours 45 minutes in minutes
+            const localOffsetMinutes = now.getTimezoneOffset(); // current timezone offset from UTC
+            const totalOffset = (nepalOffsetMinutes + localOffsetMinutes) * 60000; // convert to milliseconds
+
+            const nepalTime = new Date(now.getTime() + totalOffset);
+
+            const hours = String(nepalTime.getHours()).padStart(2, '0');
+            const minutes = String(nepalTime.getMinutes()).padStart(2, '0');
+            const seconds = String(nepalTime.getSeconds()).padStart(2, '0');
+
+            document.getElementById('nepal-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateNepalTime, 1000);
+        updateNepalTime(); // Initial call
+    </script>
 
 </body>
+
 </html>

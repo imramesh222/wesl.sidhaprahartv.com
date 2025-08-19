@@ -53,11 +53,12 @@
                     <div class="sb-sidenav-menu-heading">Communication</div>
                     <a class="nav-link" href="{% url 'contactinfo_list' %}"><div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>Contact Info</a>
                     <a class="nav-link" href="{% url 'contactmessage_list' %}"><div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>Messages</a>
+                    
 
                     <div class="sb-sidenav-menu-heading">Resources</div>
                     
                     <a class="nav-link" href="{% url 'report_list' %}"><div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>Reports</a>
-                    <a class="nav-link" href="{% url 'notice_list' %}"><div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>Publication</a>
+                    <a class="nav-link" href="{% url 'notice_list' %}"><div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>News and Notices</a>
 
 
                     <div class="sb-sidenav-menu-heading">Photo/Video</div>
@@ -97,6 +98,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'admin/js/scripts.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
-<script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+<script src="{% static 'admin/js/datatables-simple-demo.js' %}"></script>
 </body>
 </html>

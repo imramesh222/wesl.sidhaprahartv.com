@@ -1,5 +1,8 @@
 from django.urls import path
 from . import admin_views
+from .dashboard_views import (
+    notice_list, add_notice, edit_notice, delete_notice
+)
 
 urlpatterns = [
     # Dashboard
@@ -85,10 +88,10 @@ urlpatterns = [
     path('reports/delete/<int:pk>/', admin_views.delete_report, name='delete_report'),
 
     # Notices
-    path('notices/', admin_views.notice_list, name='notice_list'),
-    path('notices/add/', admin_views.add_notice, name='add_notice'),
-    path('notices/edit/<int:pk>/', admin_views.edit_notice, name='edit_notice'),
-    path('notices/delete/<int:pk>/', admin_views.delete_notice, name='delete_notice'),
+    path('notices/', notice_list, name='notice_list'),
+    path('notices/add/', add_notice, name='add_notice'),
+    path('notices/edit/<int:pk>/', edit_notice, name='edit_notice'),
+    path('notices/delete/<int:pk>/', delete_notice, name='delete_notice'),
 
     # CLIENTS
     path('clients/', admin_views.client_list, name='client_list'),

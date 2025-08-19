@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .api_views import NoticeListAPIView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,5 +18,7 @@ urlpatterns = [
     path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
     path('projects/<slug:slug>/', views.project_detail, name='project_detail'),
     path('key/info/', views.key_info_view, name='key_info_view'),
-
+    
+    # API Endpoints
+    path('api/notices/', NoticeListAPIView.as_view(), name='api_notices'),
 ]

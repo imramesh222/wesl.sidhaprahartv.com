@@ -1,5 +1,5 @@
 from django import forms
-from .models import Photo, Video, KeyInfo, OrganizationContent
+from .models import Photo, Video, KeyInfo, OrganizationContent, Notice, Notice
 from ckeditor.widgets import CKEditorWidget
 
 class ContactForm(forms.Form):
@@ -69,3 +69,17 @@ class OrganizationContentForm(forms.ModelForm):
             'geo_area': CKEditorWidget(),
             'theme_area': CKEditorWidget(),
         }        
+
+class NoticeForm(forms.ModelForm):
+    class Meta:
+        model = Notice
+        fields = ['title', 'content', 'attachment', 'is_active']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+        help_texts = {
+            'attachment': 'Upload a file (PDF, DOC, etc.) related to this notice (optional)',
+            'is_active': 'Uncheck to hide this notice from the website',
+        }

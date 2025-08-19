@@ -153,9 +153,15 @@ class Notice(models.Model):
     content = models.TextField()
     attachment = models.FileField(upload_to='notices/', blank=True, null=True)
     published_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True, help_text='Uncheck to hide this notice from the website')
+
+    class Meta:
+        ordering = ['-published_at']
+        verbose_name = 'Notice'
+        verbose_name_plural = 'Notices'
 
     def __str__(self):
-        return self.title
+        return f"{self.title} (Published: {self.published_at.strftime('%Y-%m-%d')})"
 
 class Client(models.Model):
     name = models.CharField(max_length=200)

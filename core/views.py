@@ -91,8 +91,13 @@ def downloads(request):
     return render(request, 'downloads.html', context)
 
 def notice(request):
-    notices = Notice.objects.all().order_by('-published_at')
-    context = {'notices': notices}
+    notices = Notice.objects.filter(is_active=True).order_by('-published_at')
+    context = {
+        'notices': notices,
+        'title': 'News and Notices',
+        'page_header': 'News and Notices',
+        'breadcrumb_title': 'News and Notices'
+    }
     return render(request, 'notice.html', context)
 
 

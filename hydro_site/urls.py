@@ -4,13 +4,33 @@ from django.conf import settings
 from django.conf.urls.static import static
 from core import admin_views
 from django.contrib.auth import views as auth_views
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+# API Schema
+schema_view = get_schema_view(
+   openapi.Info(
+      title="WESL API",
+      default_version='v1',
+      description="API for WESL website",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     # Django Admin Panel
     path('admin/', admin.site.urls),
 
+    # API Documentation
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    
     # Public/Main Site URLs
     path('', include('core.urls')),
+
+    # API URLs
+    path('api/', include('core.api_urls')),
 
     # Admin Dashboard URLs (app-specific)
     path('dashboard/', include('core.admin_urls')),
