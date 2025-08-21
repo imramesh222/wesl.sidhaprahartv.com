@@ -101,6 +101,24 @@ def notice(request):
     return render(request, 'notice.html', context)
 
 
+def notice_detail(request, pk):
+    notice = get_object_or_404(Notice, pk=pk, is_active=True)
+    related_notices = Notice.objects.filter(is_active=True).exclude(pk=pk).order_by('-published_at')[:5]
+    
+    # Get the latest notices for the frontend view
+    latest_notices = Notice.objects.filter(is_active=True).order_by('-published_at')[:10]
+    
+    context = {
+        'notice': notice,  # For single notice view
+        'notices': latest_notices,  # For list view fallback
+        'related_notices': related_notices,
+        'title': notice.title,
+        'page_header': notice.title,
+        'breadcrumb_title': 'Notice Details'
+    }
+    return render(request, 'notice.html', context)
+
+
 # Contact Page View
 def contact(request):
     contact_info = ContactInfo.objects.first()

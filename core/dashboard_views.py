@@ -6,12 +6,12 @@ from .models import Notice
 from .forms import NoticeForm
 
 @login_required
-def notice_list(request):
+def admin_notice_list(request):
     notices = Notice.objects.all().order_by('-published_at')
     return render(request, 'dashboard/notice_list.html', {'notices': notices})
 
 @login_required
-def add_notice(request):
+def admin_add_notice(request):
     if request.method == 'POST':
         form = NoticeForm(request.POST, request.FILES)
         if form.is_valid():
@@ -28,7 +28,7 @@ def add_notice(request):
     })
 
 @login_required
-def edit_notice(request, pk):
+def admin_edit_notice(request, pk):
     notice = get_object_or_404(Notice, pk=pk)
     
     if request.method == 'POST':
@@ -46,7 +46,7 @@ def edit_notice(request, pk):
     })
 
 @login_required
-def delete_notice(request, pk):
+def admin_delete_notice(request, pk):
     notice = get_object_or_404(Notice, pk=pk)
     if request.method == 'POST':
         notice.delete()

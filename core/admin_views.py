@@ -686,12 +686,12 @@ def delete_report(request, pk):
 # Notices
 
 @login_required
-def notice_list(request):
+def admin_notice_list(request):
     notices = Notice.objects.all()
     return render(request, 'dashboard/notice_list.html', {'notices': notices})
 
 @login_required
-def add_notice(request):
+def admin_add_notice(request):
     if request.method == 'POST':
         form = NoticeForm(request.POST, request.FILES)
         if form.is_valid():
@@ -707,7 +707,7 @@ def add_notice(request):
     })
 
 @login_required
-def edit_notice(request, pk):
+def admin_edit_notice(request, pk):
     notice = get_object_or_404(Notice, pk=pk)
     if request.method == 'POST':
         form = NoticeForm(request.POST, request.FILES, instance=notice)
@@ -724,7 +724,7 @@ def edit_notice(request, pk):
     })
 
 @login_required
-def delete_notice(request, pk):
+def admin_delete_notice(request, pk):
     notice = get_object_or_404(Notice, pk=pk)
     if request.method == 'POST':
         notice.delete()
@@ -743,7 +743,7 @@ def client_list(request):
     return render(request, 'dashboard/client_list.html', {'clients': clients})
 
 @login_required
-def add_client(request):
+def admin_add_client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST, request.FILES)
         if form.is_valid():
@@ -759,7 +759,7 @@ def add_client(request):
     })
 
 @login_required
-def edit_client(request, pk):
+def admin_edit_client(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if request.method == 'POST':
         form = ClientForm(request.POST, request.FILES, instance=client)
@@ -776,7 +776,7 @@ def edit_client(request, pk):
     })
 
 @login_required
-def delete_client(request, pk):
+def admin_delete_client(request, pk):
     client = get_object_or_404(Client, pk=pk)
     if request.method == 'POST':
         client.delete()

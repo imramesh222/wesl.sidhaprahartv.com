@@ -1,7 +1,7 @@
 from django.urls import path
 from . import admin_views
 from .dashboard_views import (
-    notice_list, add_notice, edit_notice, delete_notice
+    admin_notice_list, admin_add_notice, admin_edit_notice, admin_delete_notice
 )
 
 urlpatterns = [
@@ -88,16 +88,16 @@ urlpatterns = [
     path('reports/delete/<int:pk>/', admin_views.delete_report, name='delete_report'),
 
     # Notices
-    path('notices/', notice_list, name='notice_list'),
-    path('notices/add/', add_notice, name='add_notice'),
-    path('notices/edit/<int:pk>/', edit_notice, name='edit_notice'),
-    path('notices/delete/<int:pk>/', delete_notice, name='delete_notice'),
+    path('admin_notices/', admin_notice_list, name='admin_notice_list'),
+    path('admin_notices/add/', admin_add_notice, name='admin_add_notice'),
+    path('admin_notices/edit/<int:pk>/', admin_edit_notice, name='admin_edit_notice'),
+    path('admin_notices/delete/<int:pk>/', admin_delete_notice, name='admin_delete_notice'),
 
     # CLIENTS
     path('clients/', admin_views.client_list, name='client_list'),
-    path('clients/add/', admin_views.add_client, name='add_client'),
-    path('clients/edit/<int:pk>/', admin_views.edit_client, name='edit_client'),
-    path('clients/delete/<int:pk>/', admin_views.delete_client, name='delete_client'),
+    path('clients/add/', admin_views.admin_add_client, name='add_client'),
+    path('clients/edit/<int:pk>/', admin_views.admin_edit_client, name='edit_client'),
+    path('clients/delete/<int:pk>/', admin_views.admin_delete_client, name='delete_client'),
 
     # NEWSLETTER
     path('newsletter/', admin_views.newsletter_list, name='newsletter_list'),

@@ -135,6 +135,47 @@
                 display: inline-block;
             }
         }
+
+
+/* Mottos Styling */
+.motto-item {
+    display: flex;
+    justify-content: center;
+    padding: 8px 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    line-height: 1.4;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    
+}
+
+.motto-english {
+    width: 30%;
+    background-color: #fa0004; /* Red background */
+    color: #ffffff;
+}
+
+.motto-nepali {
+    background-color: #0400f5; /* Blue background */
+    font-family: 'Preeti', sans-serif;
+    font-size: 1em;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+@media (max-width: 991.98px) {
+    .motto-item {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+    .motto-nepali {
+        font-size: 1em;
+    }
+}
     </style>
 </head>
 
@@ -148,50 +189,42 @@
     <!-- Spinner End -->
 
     <!-- Topbar Start -->
-    <div class="container-fluid bg-dark px-0">
+    <div class="container-fluid bg-dark px-0" style="background-color: #0400f5;">
         <div class="row g-0 ">
             <!-- Follow Us - Hidden on mobile, shows on lg and up -->
-            <div class="col-12 col-lg-2 ps-3 ps-lg-5 text-start d-none d-lg-flex py-1">
+            <div class="col-12 col-lg-2 ps-3 ps-lg-5 text-start d-none d-lg-flex py-1" style="background-color: #0400f5;">
                 <div class="h-100 d-inline-flex align-items-center text-white">
                     <span class="d-none d-xl-inline">Follow Us:</span>
-                    {% if org_details.facebook %}<a class="btn btn-link text-light p-1"
+                    {% if org_details.facebook %}<a class="btn btn-link text-light"
                         href="{{ org_details.facebook }}"><i class="fab fa-facebook-f"></i></a>{% endif %}
-                    {% if org_details.twitter %}<a class="btn btn-link text-light p-1"
+                    {% if org_details.twitter %}<a class="btn btn-link text-light"
                         href="{{ org_details.twitter }}"><i class="fab fa-twitter"></i></a>{% endif %}
-                    {% if org_details.linkedin %}<a class="btn btn-link text-light p-1"
+                    {% if org_details.linkedin %}<a class="btn btn-link text-light"
                         href="{{ org_details.linkedin }}"><i class="fab fa-linkedin-in"></i></a>{% endif %}
-                    {% if org_details.instagram %}<a class="btn btn-link text-light p-1"
+                    {% if org_details.instagram %}<a class="btn btn-link text-light"
                         href="{{ org_details.instagram }}"><i class="fab fa-instagram"></i></a>{% endif %}
                 </div>
             </div>
 
-            <!-- Notice Section - Full width on mobile, 7 columns on lg+ -->
-            <div class="col-12 col-lg-7 px-3 px-lg-0 py-1">
-                <div class="h-100 d-flex align-items-center justify-content-center py-1 py-lg-0 ">
-                    <div class="notice-container w-100 bg-dark" id="noticeContainer">
-                        <!-- Loading placeholder -->
-                        <div class="notice-item">
-                            <span><i class="fa fa-spinner fa-spin me-2"></i>Loading notices...</span>
-                        </div>
+            <!-- Mottos Section - Full width on mobile, 7 columns on lg+ -->
+            <div class="col-12 col-lg-7 px-0" style="background-color: #0400f5; overflow: hidden;">
+                <div class="h-100 d-flex align-items-stretch" style="gap: 10px; padding: 0 20px;">
+                    <div class="motto-item motto-english d-flex align-items-center justify-content-center">
+                        <div>"Empowering Community, Enriching Lives"</div>
+                    </div>
+                    <div class="motto-item motto-nepali d-flex align-items-center justify-content-center">
+                        <div>"सम्मानित र समृद्ध जीवनका लागि सामुदायिक सशक्तिकरण"</div>
                     </div>
                 </div>
             </div>
 
             <!-- Phone Section - 3 columns on lg+ -->
-            <div class="col-12 col-lg-3 text-center text-lg-center p-0 ">
-                <div class="h-100 d-flex align-items-center justify-content-center text-white" style="
-                background-color: #dc3545;
-                transform: skewX(-20deg);
-                transform-origin: top right;
-                padding-left: 30px;
-                padding-right: 20px;
-                margin-right: -20px;
-                width: calc(100% + 20px);
-            ">
-                    <div class="d-inline-flex align-items-center" style="transform: skewX(20deg);">
+            <div class="col-12 col-lg-3 text-center text-lg-end p-0 ms-auto" style="background-color: #ff0000;">
+                <div class="h-100 topbar-right d-inline-flex align-items-center text-white py-2 pe-5 justify-content-end">
+
                         <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span>
                         <span class="fs-5 fw-bold">{{ org_details.phone }}</span>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -251,7 +284,7 @@
                     <a href="{% url 'reports' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Reports</a>
                     <a href="{% url 'video' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Video</a>
                     <a href="{% url 'photo' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Photo</a>
-                    <a href="{% url 'notice' %}"
+                    <a href="{% url 'notice_list' %}"
                         class="nav-item nav-link px-3 py-3 text-white fw-bold">Publication</a>
                     <a href="{% url 'contact' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Contact</a>
                 </div>
@@ -296,7 +329,7 @@
                         <a href="#" class="nav-link dropdown-toggle ps-3" data-bs-toggle="dropdown">Resources</a>
                         <div class="dropdown-menu bg-light m-0">
                             <a href="{% url 'downloads' %}" class="dropdown-item ps-4">Downloads</a>
-                            <a href="{% url 'notice' %}" class="dropdown-item ps-4">Notice</a>
+                            <a href="{% url 'notice_list' %}" class="dropdown-item ps-4">Notice</a>
                         </div>
                     </div>
                     <a href="{% url 'contact' %}" class="nav-item nav-link ps-3">Contact</a>
@@ -352,7 +385,7 @@
                     <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
                     <a class="btn btn-link" href="{% url 'services' %}">Services</a>
-                    <a class="btn btn-link" href="{% url 'notice' %}">Notice</a>
+                    <a class="btn btn-link" href="{% url 'notice_list' %}">Notice</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-white mb-4">Business Hours</h5>
@@ -430,7 +463,7 @@
     <script src="{% static 'js/main.js' %}"></script>
 
     <!-- Notice Rotation Script -->
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const noticeContainer = document.querySelector('.notice-container');
             const noticeItems = document.querySelectorAll('.notice-item');
@@ -463,114 +496,6 @@
                 // Animate in the next notice
                 nextNotice.style.transform = 'translateX(0)';
                 nextNotice.style.opacity = '1';
-                nextNotice.classList.add('active');
-            }
-        });
-    </script>
-
-    <!-- Notice Loading Script -->
-    <script>
-        // Function to fetch and display notices
-        function loadNotices() {
-            console.log('loadNotices() called');
-            const noticeContainer = document.getElementById('noticeContainer');
-            console.log('Notice container:', noticeContainer);
-            if (!noticeContainer) {
-                console.error('Notice container not found');
-                return;
-            }
-
-            // Show loading message
-            noticeContainer.innerHTML = `
-                <div class="notice-item active">
-                    <span><i class="fas fa-spinner fa-spin me-2"></i>Loading notices...</span>
-                </div>
-            `;
-
-            console.log('Fetching notices from /api/notices/');
-            fetch('/api/notices/')
-                .then(response => {
-                    console.log('API response status:', response.status);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(notices => {
-                    console.log('Received notices:', notices);
-                    // Clear loading message
-                    noticeContainer.innerHTML = '';
-
-                    if (notices && notices.length > 0) {
-                        // Add each notice to the container
-                        notices.forEach((notice, index) => {
-                            const noticeItem = document.createElement('div');
-                            noticeItem.className = 'notice-item' + (index === 0 ? ' active' : '');
-                            noticeItem.innerHTML = `
-                                <a href="/notice/#notice-${notice.id}" class="d-flex align-items-center justify-content-center w-100 h-100">
-                                    <i class="fas fa-bullhorn me-2"></i>
-                                    <span class="text-truncate">${notice.content}</span>
-                                </a>
-                            `;
-                            noticeContainer.appendChild(noticeItem);
-                        });
-
-                        // Start rotating notices if there are multiple
-                        if (notices.length > 1) {
-                            startNoticeRotation();
-                        }
-                    } else {
-                        // No notices available
-                        const noNotices = document.createElement('div');
-                        noNotices.className = 'notice-item active';
-                        noNotices.innerHTML = '<span>No notices available</span>';
-                        noticeContainer.appendChild(noNotices);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading notices:', error);
-                    noticeContainer.innerHTML = `
-                        <div class="notice-item active">
-                            <span class="text-warning"><i class="fas fa-exclamation-triangle me-2"></i>Error loading notices</span>
-                        </div>
-                    `;
-                });
-        }
-
-        // Function to rotate notices
-        function startNoticeRotation() {
-            const noticeContainer = document.getElementById('noticeContainer');
-            const noticeItems = document.querySelectorAll('.notice-item');
-            if (noticeItems.length <= 1) return; // No need to rotate if only one item
-
-            let currentIndex = 0;
-            const rotationInterval = 5000; // 5 seconds
-            let rotationTimer = null;
-
-            function showNextNotice() {
-                // Get current and next indices
-                const nextIndex = (currentIndex + 1) % noticeItems.length;
-                
-                // Fade out current notice
-                noticeItems[currentIndex].classList.remove('active');
-                
-                // Fade in next notice
-                setTimeout(() => {
-                    noticeItems[nextIndex].classList.add('active');
-                    currentIndex = nextIndex;
-                }, 500); // Match this with the CSS transition duration
-            }
-
-            // Start the rotation
-            rotationTimer = setInterval(showNextNotice, rotationInterval);
-
-            // Pause rotation on hover
-            noticeContainer.addEventListener('mouseenter', () => {
-                if (rotationTimer) {
-                    clearInterval(rotationTimer);
-                    rotationTimer = null;
-                }
-            });
 
             // Resume rotation when mouse leaves
             noticeContainer.addEventListener('mouseleave', () => {

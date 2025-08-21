@@ -1,3 +1,11 @@
+/* Preeti Font */
+@font-face {
+    font-family: 'Preeti';
+    src: url('https://fonts.cdnfonts.com/css/preeti') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /********** Template CSS **********/
 :root {
     --primary: #e41318;
@@ -92,28 +100,36 @@ h6,
 }
 
 
-.topbar-right {
+/* .topbar-right {
     position: relative;
     background: var(--primary);
+
+} */
+
+.topbar-right {
+    position: relative;
+    overflow: hidden;
 }
 
 .topbar-right::before {
-    position: absolute;
     content: "";
-    width: 30px;
-    height: 100%;
+    position: absolute;
     top: 0;
-    left: -15px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: 100%;
+    background-color: #ff0000;
     transform: skewX(-30deg);
-    background-color: var(--primary);
+    transform-origin: top left;
+    z-index: -1;
 }
 
 
 /*** Navbar ***/
-.navbar.sticky-top {
+/* .navbar.sticky-top {
     top: -100px;
     transition: .5s;
-}
+} */
 
 .navbar .navbar-brand {
     position: relative;
@@ -201,19 +217,64 @@ h6,
     z-index: 1;
 }
 
+#header-carousel {
+    position: relative;
+    overflow: visible;
+}
+
 .carousel-control-prev,
 .carousel-control-next {
-    width: 15%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    /* background: rgba(251, 0, 0, 0.3); */
+    border-radius: 50%;
+    border: none;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(254, 0, 0, 0.826);
+}
+
+.carousel-control-prev:hover{
+    width: 60px;
+    height: 60px;
+    transform: translateY(-50%);
+    /* transform: translateX(-20px) */
+}
+
+.carousel-control-next:hover{
+    width: 60px;
+    height: 60px;
+    transform: translateY(-50%);
+    /* transform: translateX(20px) */
+}
+
+
+.carousel-control-prev {
+    left: 40px;
+}
+
+.carousel-control-next {
+    right: 40px;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    width: 3.5rem;
-    height: 3.5rem;
-    background-color: var(--primary);
-    border: 15px solid var(--primary);
-    border-radius: 3.5rem;
+    width: 30px;
+    height: 30px;
+    background-size: 100%, 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0) invert(1);
 }
+
 
 @media (max-width: 768px) {
     #header-carousel .carousel-item {
@@ -699,4 +760,74 @@ h6,
 .copyright {
     color: #B0B9AE;
     border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+/*** Top Bar ***/
+.top-bar {
+    padding: 15px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(256, 256, 256, .1);
+}
+
+/* Mottos Styling */
+.motto-item {
+    padding: 8px 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    line-height: 1.4;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    transform: skewX(-30deg);
+    margin: 0 5px;
+    min-width: 0;
+}
+
+.motto-item > div {
+    transform: skewX(30deg);
+    padding: 0 20px;
+}
+
+.motto-english {
+    background-color: #fa0004; /* Red background */
+    /* margin-left: -10px; */
+}
+
+.motto-nepali {
+    background-color: #0400f5; /* Blue background */
+    font-family: 'Preeti', sans-serif;
+    font-size: 1.4em;
+    letter-spacing: 1px;
+    margin-right: -10px;
+}
+
+@media (max-width: 991.98px) {
+    .motto-item {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+    .motto-nepali {
+        font-size: 1.2em;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 991.98px) {
+    /* Hide top bar on mobile */
+    .top-bar,
+    .topbar-right,
+    .motto-item {
+        display: none !important;
+    }
+    
+    .motto-item {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+    
+    .motto-nepali {
+        font-size: 1em;
+    }
 }
