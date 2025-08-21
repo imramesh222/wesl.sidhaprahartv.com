@@ -149,29 +149,38 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    
+    text-transform: none; 
 }
 
 .motto-english {
     width: 30%;
-    background-color: #fa0004; /* Red background */
+    background-color: #0400f5; 
     color: #ffffff;
 }
 
 .motto-nepali {
-    background-color: #0400f5; /* Blue background */
+    background-color: #ff0000; 
     font-family: 'Preeti', sans-serif;
     font-size: 1em;
     letter-spacing: 1px;
     color: #ffffff;
+    padding-right: 10px;
 }
 
+/* Mobile styles */
 @media (max-width: 991.98px) {
+    
+    .top-bar,
+    .topbar-right,
+    .motto-item {
+        display: none !important;
+    }
+    
     .motto-item {
         font-size: 0.9rem;
         padding: 6px 10px;
     }
+    
     .motto-nepali {
         font-size: 1em;
     }
@@ -192,7 +201,7 @@
     <div class="container-fluid bg-dark px-0" style="background-color: #0400f5;">
         <div class="row g-0 ">
             <!-- Follow Us - Hidden on mobile, shows on lg and up -->
-            <div class="col-12 col-lg-2 ps-3 ps-lg-5 text-start d-none d-lg-flex py-1" style="background-color: #0400f5;">
+            <div class="col-12 col-lg-6 ps-3 ps-lg-5 text-start d-none d-lg-flex py-1" style="background-color: #0400f5;">
                 <div class="h-100 d-inline-flex align-items-center text-white">
                     <span class="d-none d-xl-inline">Follow Us:</span>
                     {% if org_details.facebook %}<a class="btn btn-link text-light"
@@ -204,10 +213,13 @@
                     {% if org_details.instagram %}<a class="btn btn-link text-light"
                         href="{{ org_details.instagram }}"><i class="fab fa-instagram"></i></a>{% endif %}
                 </div>
+                <div class="motto-item motto-english d-flex align-items-center justify-content-center">
+                    <div>"Empowering Community, Enriching Lives"</div>
+                </div>
             </div>
 
             <!-- Mottos Section - Full width on mobile, 7 columns on lg+ -->
-            <div class="col-12 col-lg-7 px-0" style="background-color: #0400f5; overflow: hidden;">
+            <!-- <div class="col-12 col-lg-7 px-0" style="background-color: #0400f5; overflow: hidden;">
                 <div class="h-100 d-flex align-items-stretch" style="gap: 10px; padding: 0 20px;">
                     <div class="motto-item motto-english d-flex align-items-center justify-content-center">
                         <div>"Empowering Community, Enriching Lives"</div>
@@ -216,14 +228,16 @@
                         <div>"सम्मानित र समृद्ध जीवनका लागि सामुदायिक सशक्तिकरण"</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Phone Section - 3 columns on lg+ -->
-            <div class="col-12 col-lg-3 text-center text-lg-end p-0 ms-auto" style="background-color: #ff0000;">
-                <div class="h-100 topbar-right d-inline-flex align-items-center text-white py-2 pe-5 justify-content-end">
-
-                        <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span>
-                        <span class="fs-5 fw-bold">{{ org_details.phone }}</span>
+            <div class="col-12 col-lg-6 text-center text-lg-end p-0 ms-auto" style="background-color: #ff0000;">
+                <div class="h-100 topbar-right d-inline-flex align-items-center text-white py-2 pe-5" >
+                    <div class="motto-item motto-nepali d-flex align-items-center justify-content-center">
+                        <div>"सम्मानित र समृद्ध जीवनका लागि सामुदायिक सशक्तिकरण"</div>
+                    </div>
+                        <!-- <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span> -->
+                        <span class="fs-5 fw-bold" style="margin-left: 50px;">{{ org_details.phone }}</span>
 
                 </div>
             </div>
@@ -260,8 +274,7 @@
 
                         <div class="admin-links">
                             <small class="text-muted">
-                                <a href="{% url 'dashboard_home' %}" class="text-decoration-none text-muted">Admin
-                                    Login | Dashboard</a>
+                                <a href="{% url 'dashboard_home' %}" class="text-decoration-none text-muted">Admin Login | Dashboard</a>
                             </small>
                         </div>
                     </div>
@@ -276,17 +289,17 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark px-0 py-0" style="background-color: #e41318;">
                 <div class="navbar-nav mx-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Home</a>
-                    <a href="{% url 'about' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">About Us</a>
-                    <a href="{% url 'key_info_view' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">What
+                    <a href="{% url 'home' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">About Us</a>
+                    <a href="{% url 'key_info_view' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">What
                         We Do</a>
-                    <a href="{% url 'projects' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">News</a>
-                    <a href="{% url 'reports' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Reports</a>
-                    <a href="{% url 'video' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Video</a>
-                    <a href="{% url 'photo' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Photo</a>
-                    <a href="{% url 'notice_list' %}"
-                        class="nav-item nav-link px-3 py-3 text-white fw-bold">Publication</a>
-                    <a href="{% url 'contact' %}" class="nav-item nav-link px-3 py-3 text-white fw-bold">Contact</a>
+                    <a href="{% url 'projects' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Projects</a>
+                    <a href="{% url 'reports' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Reports</a>
+                    <a href="{% url 'video' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Video</a>
+                    <a href="{% url 'photo' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Photo</a>
+                    <a href="{% url 'notice_list' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">News & Notices</a>
+                    <a href="{% url 'career_list' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Careers</a>
+                    <a href="{% url 'contact' %}" class="nav-item nav-link px-2 py-3 text-white fw-bold">Contact</a>
                 </div>
             </nav>
         </div>
@@ -320,16 +333,17 @@
             <!-- Mobile Collapsible Content -->
             <div class="collapse navbar-collapse px-0" id="navbarCollapse">
                 <div class="navbar-nav bg-light">
-                    <a href="{% url 'home' %}" class="nav-item nav-link ps-3">Home</a>
-                    <a href="{% url 'about' %}" class="nav-item nav-link ps-3">About</a>
-                    <a href="{% url 'services' %}" class="nav-item nav-link ps-3">Services</a>
-                    <a href="{% url 'projects' %}" class="nav-item nav-link ps-3">Projects</a>
-                    <a href="{% url 'reports' %}" class="nav-item nav-link ps-3">Reports</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link px-2 py-3">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link px-2 py-3">About</a>
+                    <a href="{% url 'services' %}" class="nav-item nav-link px-2 py-3">Services</a>
+                    <a href="{% url 'projects' %}" class="nav-item nav-link px-2 py-3">Projects</a>
+                    <a href="{% url 'reports' %}" class="nav-item nav-link px-2 py-3">Reports</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle ps-3" data-bs-toggle="dropdown">Resources</a>
+                        <a href="#" class="nav-link dropdown-toggle px-2 py-3" data-bs-toggle="dropdown">Resources</a>
                         <div class="dropdown-menu bg-light m-0">
-                            <a href="{% url 'downloads' %}" class="dropdown-item ps-4">Downloads</a>
-                            <a href="{% url 'notice_list' %}" class="dropdown-item ps-4">Notice</a>
+                            <a href="{% url 'downloads' %}" class="dropdown-item px-2 py-3">Downloads</a>
+                            <a href="{% url 'notice_list' %}" class="dropdown-item px-2 py-3">News & Notices</a>
+                            <a href="{% url 'career_list' %}" class="dropdown-item px-2 py-3">Careers</a>
                         </div>
                     </div>
                     <a href="{% url 'contact' %}" class="nav-item nav-link ps-3">Contact</a>
@@ -352,7 +366,7 @@
     <!--{% endif %}-->
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark footer mt-5 py-3 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -369,26 +383,27 @@
                         </div>
                         {% endif %}
                     </div>
-
+                    
                     {% if org_details.address %}
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</p>
+                    <div class="d-flex justify-content-between mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</div>
                     {% endif %}
                     {% if org_details.phone %}
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ org_details.phone }}</p>
                     {% endif %}
                     {% if org_details.email %}
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ org_details.email }}</p>
-                    {% endif %}
+                    {% endif %}             
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <h3 class="text-white mb-4">Quick Links</h3>
                     <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
                     <a class="btn btn-link" href="{% url 'services' %}">Services</a>
                     <a class="btn btn-link" href="{% url 'notice_list' %}">Notice</a>
+                    <a class="btn btn-link" href="{% url 'career_list' %}">Careers</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Business Hours</h5>
+                    <h3 class="text-white mb-4">Office Hours</h3>
                     <p class="mb-1">Sunday - Friday</p>
                     {% if org_details.weekday_hours %}
                     <h6 class="text-light">{{ org_details.weekday_hours }}</h6>
@@ -399,7 +414,7 @@
                     {% endif %}
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Newsletter</h5>
+                    <h3 class="text-white mb-4">Newsletter</h3>
                     <p>Stay updated with the latest HandsNepal news and reports.</p>
                     <form method="post" action="{% url 'subscribe_newsletter' %}">
                         {% csrf_token %}
@@ -419,10 +434,8 @@
     <!-- Copyright -->
     <div class="container-fluid copyright bg-dark py-4">
         <div class="container text-center">
-            <p class="mb-2">© <a class="fw-semi-bold" style="color:white" href="#">{% if org_details %}{{
-                    org_details.site_title }}{% else %}HandsNepal{% endif %}</a>. All Rights Reserved.</p>
-            <p class="mb-0">Design by <a class="fw-semi-bold" style="color:white" href="https://www.kitwosd.com/"
-                    target="_blank" rel="noopener noreferrer">Kitwosd IT Support Center</a></p>
+            <span class="mb-2">© <a class="fw-semi-bold" style="color:white" href="#">{% if org_details %}{{ org_details.site_title }}{% else %}HandsNepal{% endif %}</a>. All Rights Reserved.</span>
+            <span class="mb-0 ps-3">Design by <a class="fw-semi-bold" style="color:white" href="https://www.kitwosd.com/" target="_blank" rel="noopener noreferrer">Kitwosd IT Support Center</a></span>
         </div>
     </div>
 

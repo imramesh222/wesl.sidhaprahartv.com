@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
-from .api_views import NoticeListAPIView
+from .api_views import (
+    NoticeListAPIView, TeamListAPIView, TeamDetailAPIView,
+    CareerListAPIView, CareerDetailAPIView
+)
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -22,4 +25,27 @@ urlpatterns = [
     
     # API Endpoints
     path('api/notices/', NoticeListAPIView.as_view(), name='api_notices'),
+    
+    # Team URLs
+    path('team/', views.team_list, name='team_list'),
+    path('team/<int:pk>/', views.team_detail, name='team_detail'),
+    path('team/add/', views.team_create, name='team_create'),
+    path('team/<int:pk>/edit/', views.team_update, name='team_update'),
+    path('team/<int:pk>/delete/', views.team_delete, name='team_delete'),
+    
+    # Team API Endpoints
+    path('api/teams/', TeamListAPIView.as_view(), name='api_teams'),
+    path('api/teams/<int:pk>/', TeamDetailAPIView.as_view(), name='api_team_detail'),
+    
+    # Career URLs
+    path('careers/', views.CareerListView.as_view(), name='career_list'),
+    path('careers/<int:pk>/', views.CareerDetailView.as_view(), name='career_detail'),
+    path('careers/add/', views.CareerCreateView.as_view(), name='career_create'),
+    path('careers/<int:pk>/edit/', views.CareerUpdateView.as_view(), name='career_update'),
+    path('careers/<int:pk>/delete/', views.career_delete, name='career_delete'),
+    path('careers/<int:pk>/apply/', views.career_apply, name='career_apply'),
+    
+    # Career API Endpoints
+    path('api/careers/', CareerListAPIView.as_view(), name='api_careers'),
+    path('api/careers/<int:pk>/', CareerDetailAPIView.as_view(), name='api_career_detail'),
 ]

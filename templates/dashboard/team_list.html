@@ -16,45 +16,53 @@
     {% endfor %}
 {% endif %}
 
-<table class="table table-bordered table-hover">
-    <thead class="table-light">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Photo</th>
-            <th>Facebook</th>
-            <th>Twitter</th>
-            <th>Instagram</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for member in members %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ member.name }}</td>
-            <td>{{ member.position }}</td>
-            <td>
-                {% if member.photo %}
-                    <img src="{{ member.photo.url }}" width="80" alt="{{ member.name }}">
-                {% endif %}
-            </td>
-            <td>
-                {% if member.facebook %}
-                    <a href="{{ member.facebook }}" target="_blank">Facebook</a>
-                {% endif %}
-            </td>
-            <td>
-                {% if member.twitter %}
-                    <a href="{{ member.twitter }}" target="_blank">Twitter</a>
-                {% endif %}
-            </td>
-            <td>
-                {% if member.instagram %}
-                    <a href="{{ member.instagram }}" target="_blank">Instagram</a>
-                {% endif %}
-            </td>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Description</th>
+                <th>Contact</th>
+                <th>Social</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    {% if member.photo %}
+                        <img src="{{ member.photo.url }}" width="80" alt="{{ member.name }}" class="img-thumbnail">
+                    {% endif %}
+                </td>
+                <td>{{ member.name }}</td>
+                <td>{{ member.position }}</td>
+                <td>{{ member.description|truncatewords:15 }}</td>
+                <td>
+                    {% if member.email %}<div><i class="fas fa-envelope"></i> {{ member.email }}</div>{% endif %}
+                    {% if member.phone %}<div><i class="fas fa-phone"></i> {{ member.phone }}</div>{% endif %}
+                </td>
+                <td class="text-center">
+                    {% if member.facebook %}
+                        <a href="{{ member.facebook }}" target="_blank" class="btn btn-sm btn-outline-primary mb-1">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    {% endif %}
+                    {% if member.twitter %}
+                        <a href="{{ member.twitter }}" target="_blank" class="btn btn-sm btn-outline-info mb-1">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    {% endif %}
+                    {% if member.instagram %}
+                        <a href="{{ member.instagram }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    {% endif %}
+                </td>
             <td>
                 <a href="{% url 'edit_team_member' member.pk %}" class="btn btn-warning btn-sm">Edit</a>
                 <a href="{% url 'delete_team_member' member.pk %}" class="btn btn-danger btn-sm">Delete</a>

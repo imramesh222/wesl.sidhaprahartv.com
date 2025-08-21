@@ -125,6 +125,6 @@ urlpatterns = [
     path('keyinfo/', admin_views.key_info_view, name='key_info'),
     path('organization-content/edit/', admin_views.edit_organization_content, name='edit_organization_content'),
 
-    
+
 
 ]

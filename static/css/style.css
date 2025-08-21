@@ -276,6 +276,17 @@ h6,
 }
 
 
+@media(max-width: 991.98px){
+    .carousel-control-prev {
+        left: 10px;
+
+    }
+    
+    .carousel-control-next {
+        right: 10px;
+
+    }
+}
 @media (max-width: 768px) {
     #header-carousel .carousel-item {
         position: relative;
@@ -767,67 +778,4 @@ h6,
     padding: 15px 0;
     font-size: 14px;
     border-bottom: 1px solid rgba(256, 256, 256, .1);
-}
-
-/* Mottos Styling */
-.motto-item {
-    padding: 8px 15px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    line-height: 1.4;
-    flex: 1;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-    transform: skewX(-30deg);
-    margin: 0 5px;
-    min-width: 0;
-}
-
-.motto-item > div {
-    transform: skewX(30deg);
-    padding: 0 20px;
-}
-
-.motto-english {
-    background-color: #fa0004; /* Red background */
-    /* margin-left: -10px; */
-}
-
-.motto-nepali {
-    background-color: #0400f5; /* Blue background */
-    font-family: 'Preeti', sans-serif;
-    font-size: 1.4em;
-    letter-spacing: 1px;
-    margin-right: -10px;
-}
-
-@media (max-width: 991.98px) {
-    .motto-item {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-    }
-    .motto-nepali {
-        font-size: 1.2em;
-    }
-}
-
-/* Mobile styles */
-@media (max-width: 991.98px) {
-    /* Hide top bar on mobile */
-    .top-bar,
-    .topbar-right,
-    .motto-item {
-        display: none !important;
-    }
-    
-    .motto-item {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-    }
-    
-    .motto-nepali {
-        font-size: 1em;
-    }
 }

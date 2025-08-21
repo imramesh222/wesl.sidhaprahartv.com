@@ -105,20 +105,80 @@
           </div>
         </div>
       </div>
-      <!-- Geographic Coverage (longer content - full width) -->
-      <!-- <div class="col-12 wow fadeInUp" data-wow-delay="0.6s">
-        <div class="org-item featured">
+
+      <!-- Team List Section -->
+      <div class="col-12 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="org-item">
           <div class="org-header">
-            <div class="org-icon geographic">
-              <i class="fas fa-map-marked-alt"></i>
+            <div class="org-icon">
+              <i class="fas fa-users"></i>
             </div>
-            <h4>Geographic Coverage</h4>
+            <h4>Our Team</h4>
           </div>
-          <div class="org-content detailed">
-            {{ organization_content.geo_area|safe }}
+          <div class="org-content">
+            <div class="row g-4">
+              {% for member in teams %}
+              <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-card h-100 d-flex flex-column">
+                  <div class="team-img-container text-center p-3">
+                    <img class="img-fluid rounded-circle mb-3" 
+                         src="{{ member.photo.url }}" 
+                         alt="{{ member.name }}" 
+                         style="width: 180px; height: 180px; object-fit: cover; border: 5px solid #f8f9fa; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);">
+                  </div>
+                  <div class="team-info p-3 text-center flex-grow-1 d-flex flex-column">
+                    <div>
+                      <h5 class="mb-1 fw-bold">{{ member.name }}</h5>
+                      <p class="text-primary mb-3 fw-semibold">{{ member.position }}</p>
+                      {% if member.description %}
+                      <div class="team-description mb-3">
+                        <p class="mb-0 text-start">{{ member.description|truncatewords:30 }}</p>
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="mt-auto pt-3">
+                      <div class="social-links d-flex justify-content-center gap-2">
+                        {% if member.facebook %}
+                        <a href="{{ member.facebook }}" class="btn btn-sm btn-outline-primary rounded-circle" target="_blank" title="Facebook">
+                          <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.twitter %}
+                        <a href="{{ member.twitter }}" class="btn btn-sm btn-outline-info rounded-circle" target="_blank" title="Twitter">
+                          <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.instagram %}
+                        <a href="{{ member.instagram }}" class="btn btn-sm btn-outline-danger rounded-circle" target="_blank" title="Instagram">
+                          <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.email %}
+                        <a href="mailto:{{ member.email }}" class="btn btn-sm btn-outline-secondary rounded-circle" title="Email">
+                          <i class="fas fa-envelope"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.phone %}
+                        <a href="tel:{{ member.phone }}" class="btn btn-sm btn-outline-success rounded-circle" title="Phone">
+                          <i class="fas fa-phone"></i>
+                        </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <div class="col-12 text-center py-5">
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle me-2"></i> Our team information is coming soon!
+                </div>
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Interactive Nepal Map - FIXED CONTAINER -->
       <div class="col-12 wow fadeInUp" data-wow-delay="0.7s" style="margin-bottom: 1.5rem;" >
@@ -804,6 +864,67 @@
   .org-content li {
     margin-bottom: 0.4rem;
     line-height: 1.5;
+  }
+
+  /* Team Section Styles */
+  .team-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  }
+
+  .team-img-container {
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  .team-info {
+    padding: 1.5rem;
+  }
+
+  .team-description {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .social-links .btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .social-links .btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .social-links .btn i {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .team-img-container {
+      padding: 1rem 1rem 0;
+    }
+    
+    .team-info {
+      padding: 1rem;
+    }
+    
+    .social-links .btn {
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .org-content strong {

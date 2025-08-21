@@ -73,23 +73,32 @@ class ServiceForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['title', 'description', 'image', 'status']
+        fields = ['title', 'short_description', 'description', 'image', 'attachment', 'status']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Project Title'}),
-            'description': forms.Textarea(attrs={'placeholder': 'Project Description'}),
-            'image': forms.ClearableFileInput(),
-            'status': forms.Select(),
+            'short_description': forms.TextInput(attrs={'placeholder': 'Short description (max 255 characters)'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Detailed project description', 'rows': 5}),
+            'image': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
+            'attachment': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+        }
+        help_texts = {
+            'image': 'Main project image (recommended size: 800x600px)',
+            'attachment': 'Optional file attachment (PDF, Word, etc.)',
         }
 
 
 class TeamMemberForm(forms.ModelForm):
     class Meta:
         model = TeamMember
-        fields = ['name', 'position', 'photo', 'facebook', 'twitter', 'instagram']
+        fields = ['name', 'position', 'description', 'photo', 'email', 'phone', 'facebook', 'twitter', 'instagram']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Team Member Name'}),
             'position': forms.TextInput(attrs={'placeholder': 'Position'}),
+            'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Description (optional)'}),
             'photo': forms.ClearableFileInput(),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email (optional)'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Phone (optional)'}),
             'facebook': forms.URLInput(attrs={'placeholder': 'Facebook URL (optional)'}),
             'twitter': forms.URLInput(attrs={'placeholder': 'Twitter URL (optional)'}),
             'instagram': forms.URLInput(attrs={'placeholder': 'Instagram URL (optional)'}),
@@ -129,7 +138,7 @@ class ReportForm(forms.ModelForm):
 class NoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
-        fields = ['title', 'content', 'attachment']
+        fields = ['title', 'content', 'image', 'attachment']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Notice Title'}),
             'content': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Notice Content'}),
@@ -178,3 +187,4 @@ class OrganizationDetailForm(forms.ModelForm):
             'instagram': forms.URLInput(attrs={'placeholder': 'Instagram URL'}),
             'linkedin': forms.URLInput(attrs={'placeholder': 'LinkedIn URL'}),
         }
+

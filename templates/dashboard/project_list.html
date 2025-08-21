@@ -23,7 +23,8 @@
             <th>Title</th>
             <th>Status</th>
             <th>Image</th>
-            <th>Link</th>
+            <th>Attachment</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -35,13 +36,24 @@
             <td>{{ project.get_status_display }}</td>
             <td>
                 {% if project.image %}
-                    <img src="{{ project.image.url }}" width="100" alt="{{ project.title }}">
+                    <img src="{{ project.image.url }}" width="100" alt="{{ project.title }}" class="img-thumbnail">
+                {% else %}
+                    <span class="text-muted">No image</span>
                 {% endif %}
             </td>
             <td>
-                {% if project.link %}
-                    <a href="{{ project.link }}" target="_blank">Link</a>
+                {% if project.attachment %}
+                    <a href="{{ project.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                {% else %}
+                    <span class="text-muted">No attachment</span>
                 {% endif %}
+            </td>
+            <td>
+                <span class="badge {% if project.status == 'ongoing' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                    {{ project.get_status_display }}
+                </span>
             </td>
             <td>
                 <a href="{% url 'edit_project' project.pk %}" class="btn btn-warning btn-sm">Edit</a>

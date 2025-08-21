@@ -986,3 +986,4 @@ def edit_organization_content(request):
     else:
         form = OrganizationContentForm(instance=content)
     return render(request, 'dashboard/edit_organization_content.html', {'form': form})
+

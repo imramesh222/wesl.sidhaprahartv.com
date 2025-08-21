@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django import forms
-from .models import Notice
-from .forms import NoticeForm
+from django.urls import reverse
+from .models import Notice, Career
+from .forms import NoticeForm, CareerForm
 
 @login_required
 def admin_notice_list(request):
@@ -58,3 +59,61 @@ def admin_delete_notice(request, pk):
         'object': notice,
         'cancel_url': 'notice_list'
     })
+
+# Career Management Views
+@login_required
+def admin_career_list(request):
+    careers = Career.objects.all().order_by('-opening_date')
+    return render(request, 'dashboard/career_list.html', {'careers': careers})
+
+@login_required
+def admin_add_career(request):
+    if request.method == 'POST':
+        form = CareerForm(request.POST)
+        if form.is_valid():
+            career = form.save(commit=False)
+            career.save()
+            messages.success(request, 'Career opportunity added successfully!')
+            return redirect('admin_career_list')
+    else:
+        form = CareerForm()
+    
+    return render(request, 'dashboard/career_form.html', {
+        'title': 'Add New Career Opportunity',
+        'form': form,
+        'cancel_url': 'admin_career_list'
+    })
+
+@login_required
+def admin_edit_career(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    
+    if request.method == 'POST':
+        form = CareerForm(request.POST, instance=career)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Career opportunity updated successfully!')
+            return redirect('admin_career_list')
+    else:
+        form = CareerForm(instance=career)
+    
+    return render(request, 'dashboard/career_form.html', {
+        'title': 'Edit Career Opportunity',
+        'form': form,
+        'cancel_url': 'admin_career_list'
+    })
+
+@login_required
+def admin_delete_career(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    if request.method == 'POST':
+        career.delete()
+        messages.success(request, 'Career opportunity deleted successfully!')
+        return redirect('admin_career_list')
+    
+    return render(request, 'dashboard/confirm_delete.html', {
+        'title': 'Delete Career Opportunity',
+        'object': career,
+        'cancel_url': 'admin_career_list'
+    })
+

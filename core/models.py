@@ -76,10 +76,11 @@ class Project(models.Model):
     short_description = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
-    image = models.ImageField(upload_to='projects/')
+    image = models.ImageField(upload_to='projects/images/')
+    attachment = models.FileField(upload_to='projects/attachments/', blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ongoing')
 
-    def _str_(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
@@ -91,12 +92,15 @@ class Project(models.Model):
 
 
 class TeamMember(models.Model):
-    name = models.CharField(max_length=100)
-    position = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='team/')
+    name = models.CharField(max_length=200)
+    position = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='teams/')
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
     instagram = models.URLField(blank=True)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
         return f"{self.name} - {self.position}"
@@ -151,7 +155,8 @@ class Report(models.Model):
 class Notice(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    attachment = models.FileField(upload_to='notices/', blank=True, null=True)
+    image = models.ImageField(upload_to='notices/images/', blank=True, null=True)
+    attachment = models.FileField(upload_to='notices/attachments/', blank=True, null=True)
     published_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True, help_text='Uncheck to hide this notice from the website')
 
@@ -162,6 +167,7 @@ class Notice(models.Model):
 
     def __str__(self):
         return f"{self.title} (Published: {self.published_at.strftime('%Y-%m-%d')})"
+
 
 class Client(models.Model):
     name = models.CharField(max_length=200)
@@ -242,3 +248,13 @@ class OrganizationContent(models.Model):
 
     def __str__(self):
         return "Organizational Content"    
+
+
+class Career(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    opening_date = models.DateField()
+    closing_date = models.DateField()
+    
+    def __str__(self):
+        return self.title

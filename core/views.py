@@ -1,14 +1,25 @@
 from django.shortcuts import render
+
+from core.admin_forms import TeamMemberForm
 from .models import (
-    ContactInfo, ContactMessage, CarouselItem, AboutImage, AboutInfo,
+    Career, ContactInfo, ContactMessage, CarouselItem, AboutImage, AboutInfo,
     Fact, Feature, Service, Project, TeamMember, Testimonial, FeatureImage,
-    Report, Download, Notice, Client, NewsletterSubscriber,OrganizationContent
+    Report, Download, Notice, Client, NewsletterSubscriber, OrganizationContent,
+    Photo, Video, KeyInfo
 )
-from .models import Photo, Video, KeyInfo
 from .forms import PhotoForm, VideoForm
 from .forms import ContactForm
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseRedirect
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.utils import timezone
 
 # Home Page View
 def home(request):
@@ -30,10 +41,20 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-
+# Project Detail View
 def project_detail(request, slug):
+    # Get the project
     project = get_object_or_404(Project, slug=slug)
-    related_projects = Project.objects.filter(status=project.status).exclude(id=project.id)[:5]
+    
+    # Get related projects with only the fields we need
+    related_projects = Project.objects.filter(
+        status=project.status
+    ).exclude(
+        id=project.id
+    ).only(
+        'id', 'title', 'short_description', 'slug', 'status', 'image'
+    )[:5]
+    
     return render(request, 'projects/detail.html', {
         'project': project,
         'related_projects': related_projects,
@@ -46,8 +67,8 @@ def about(request):
     context = {
         'about_images': AboutImage.objects.all(),
         'about_info': AboutInfo.objects.first(),
-
         'organization_content': OrganizationContent.objects.first(),
+        'teams': TeamMember.objects.all().order_by('name'),
     }
     return render(request, 'about.html', context)
 
@@ -71,8 +92,12 @@ def service_detail(request, slug):
         'related_services': related_services})
 
 def projects(request):
-    ongoing_projects = Project.objects.filter(status='ongoing')
-    completed_projects = Project.objects.filter(status='completed')
+    # Only fetch the fields we need for the list view
+    project_fields = ['id', 'title', 'short_description', 'slug', 'status', 'image']
+    
+    # Get projects without using prefetch_related on FileField
+    ongoing_projects = Project.objects.filter(status='ongoing').only(*project_fields)
+    completed_projects = Project.objects.filter(status='completed').only(*project_fields)
 
     context = {
         'ongoing_projects': ongoing_projects,
@@ -188,3 +213,132 @@ def key_info_view(request):
 
 def coverage(request):
     return render(request, 'coverage.html')
+
+
+# Career Views
+class CareerListView(ListView):
+    model = Career
+    template_name = 'career/list.html'
+    context_object_name = 'careers'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        queryset = Career.objects.filter(
+            closing_date__gte=timezone.now().date()
+        ).order_by('-opening_date')
+        return queryset
+
+
+class CareerDetailView(DetailView):
+    model = Career
+    template_name = 'career/detail.html'
+    context_object_name = 'career'
+    
+    def get_queryset(self):
+        return Career.objects.filter(closing_date__gte=timezone.now().date())
+
+
+class CareerCreateView(LoginRequiredMixin, CreateView):
+    model = Career
+    template_name = 'career/form.html'
+    fields = ['title', 'description', 'opening_date', 'closing_date']
+    success_url = reverse_lazy('career-list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Career opportunity created successfully.')
+        return super().form_valid(form)
+
+
+class CareerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Career
+    template_name = 'career/form.html'
+    fields = ['title', 'description', 'opening_date', 'closing_date']
+    
+    def get_success_url(self):
+        return reverse('career-detail', kwargs={'pk': self.object.pk})
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Career opportunity updated successfully.')
+        return super().form_valid(form)
+
+
+@login_required
+def career_delete(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    if request.method == 'POST':
+        career.delete()
+        messages.success(request, 'Career opportunity deleted successfully.')
+        return redirect('career-list')
+    return render(request, 'career/confirm_delete.html', {'career': career})
+
+
+def career_apply(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    
+    if request.method == 'POST':
+        # Handle file upload and application submission
+        # You'll need to create a form for application submission
+        # and handle the file uploads appropriately
+        pass
+    
+    return render(request, 'career/apply.html', {'career': career})
+
+# Team Views
+def team_list(request):
+    team_members = TeamMember.objects.all()
+    return render(request, 'team/list.html', {'team_members': team_members})
+
+def team_detail(request, pk):
+    member = get_object_or_404(TeamMember, pk=pk)
+    return render(request, 'team/detail.html', {'member': member})
+
+@login_required
+def team_create(request):
+    if request.method == 'POST':
+        form = TeamMemberForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Team member created successfully.')
+            return redirect('team_list')
+    else:
+        form = TeamMemberForm()
+    return render(request, 'team/form.html', {'form': form, 'action': 'Add'})
+
+@login_required
+def team_update(request, pk):
+    member = get_object_or_404(TeamMember, pk=pk)
+    if request.method == 'POST':
+        form = TeamMemberForm(request.POST, request.FILES, instance=member)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Team member updated successfully.')
+            return redirect('team_list')
+    else:
+        form = TeamMemberForm(instance=member)
+    return render(request, 'team/form.html', {'form': form, 'action': 'Edit'})
+
+@login_required
+def team_delete(request, pk):
+    member = get_object_or_404(TeamMember, pk=pk)
+    if request.method == 'POST':
+        member.delete()
+        messages.success(request, 'Team member deleted successfully.')
+        return redirect('team_list')
+    return render(request, 'team/confirm_delete.html', {'member': member})
+
+# API Views
+from rest_framework import generics, filters
+from .serializers import TeamSerializer
+
+class TeamListAPIView(generics.ListCreateAPIView):
+    queryset = TeamMember.objects.all()
+    serializer_class = TeamSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'position']
+    ordering_fields = ['name', 'position']
+
+class TeamDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TeamMember.objects.all()
+    serializer_class = TeamSerializer
+
+

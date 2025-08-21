@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>{{ title }}</h2>
-                <a href="{% url 'notice_list' %}" class="btn btn-outline-secondary">
+                <a href="{% url 'admin_notice_list' %}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-1"></i> Back to List
                 </a>
             </div>
@@ -25,7 +25,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate data-success-url="{% url 'admin_notice_list' %}">
                         {% csrf_token %}
                         
                         {% if form.non_field_errors %}
@@ -56,6 +56,34 @@
                                 {% if form.content.errors %}
                                     <div class="invalid-feedback d-block">
                                         {{ form.content.errors.as_text }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="{{ form.image.id_for_label }}" class="form-label">Image (Optional)</label>
+                                {{ form.image|add_class:"form-control" }}
+                                {% if form.image.help_text %}
+                                    <small class="form-text text-muted">{{ form.image.help_text }}</small>
+                                {% endif %}
+                                {% if form.image.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.image.errors.as_text }}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if form.instance.image %}
+                                    <div class="mt-2">
+                                        <span class="d-block mb-1">Current image:</span>
+                                        <img src="{{ form.instance.image.url }}" alt="Current notice image" class="img-thumbnail" style="max-height: 150px;">
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" id="clear_image" name="image-clear">
+                                            <label class="form-check-label" for="clear_image">
+                                                Remove current image
+                                            </label>
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
@@ -107,7 +135,7 @@
                                 <i class="fas fa-save me-1"></i> Save Notice
                             </button>
                             {% if form.instance.pk %}
-                                <a href="{% url 'delete_notice' form.instance.pk %}" class="btn btn-danger" 
+                                <a href="{% url 'admin_delete_notice' form.instance.pk %}" class="btn btn-danger" 
                                    onclick="return confirm('Are you sure you want to delete this notice?')">
                                     <i class="fas fa-trash me-1"></i> Delete
                                 </a>
@@ -135,9 +163,50 @@
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
+                    form.classList.add('was-validated')
+                } else {
+                    // Form is valid, handle submission
+                    const formData = new FormData(form);
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.innerHTML;
+                    
+                    // Disable button and show loading state
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    
+                    fetch(form.action || window.location.href, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                        },
+                        credentials: 'same-origin'
+                    })
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = form.dataset.successUrl;
+                        } else {
+                            return response.json().then(data => {
+                                if (data.success) {
+                                    window.location.href = form.dataset.successUrl;
+                                } else {
+                                    throw new Error(data.message || 'An error occurred');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while saving. Please try again.');
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = originalButtonText;
+                    });
+                    
+                    event.preventDefault();
                 }
-                
-                form.classList.add('was-validated')
             }, false)
         })
 })()
