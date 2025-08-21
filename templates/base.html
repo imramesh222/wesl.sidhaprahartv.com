@@ -369,7 +369,7 @@
     <div class="container-fluid bg-dark footer mt-5 py-3 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 ps-2 pe-2">
                     <div class="d-flex align-items-center mb-4">
                         {% if org_details.logo %}
                         <img src="{{ org_details.logo.url }}" alt="Logo" class="img-fluid logo-img"
@@ -385,7 +385,7 @@
                     </div>
                     
                     {% if org_details.address %}
-                    <div class="d-flex justify-content-between mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</div>
+                    <div class=" mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ org_details.address }}</div>
                     {% endif %}
                     {% if org_details.phone %}
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ org_details.phone }}</p>
@@ -394,7 +394,7 @@
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ org_details.email }}</p>
                     {% endif %}             
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 ps-2 pe-2">
                     <h3 class="text-white mb-4">Quick Links</h3>
                     <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
@@ -402,7 +402,7 @@
                     <a class="btn btn-link" href="{% url 'notice_list' %}">Notice</a>
                     <a class="btn btn-link" href="{% url 'career_list' %}">Careers</a>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 ps-2 pe-2">
                     <h3 class="text-white mb-4">Office Hours</h3>
                     <p class="mb-1">Sunday - Friday</p>
                     {% if org_details.weekday_hours %}
@@ -413,7 +413,7 @@
                     <h6 class="text-light">{{ org_details.saturday_hours }}</h6>
                     {% endif %}
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 ps-2 pe-2">
                     <h3 class="text-white mb-4">Newsletter</h3>
                     <p>Stay updated with the latest HandsNepal news and reports.</p>
                     <form method="post" action="{% url 'subscribe_newsletter' %}">

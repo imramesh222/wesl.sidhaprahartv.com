@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+!34(8+3ig7j(#&kw(9we9ns8c9sdo01k5b)!astundri^yl%)
 DEBUG = True
 
 # ALLOWED_HOSTS = ['https://wesl.sidhaprahartv.com/','wesl.sidhaprahartv.com']
-ALLOWED_HOSTS = ['wesl.sidhaprahartv.com', 'localhost', '127.0.0.1', '192.168.18.35', '0.0.0.0','192.168.101.8']
+ALLOWED_HOSTS = ['wesl.sidhaprahartv.com', 'localhost', '127.0.0.1', '192.168.18.35', '0.0.0.0','192.168.101.5']
 
 
 # Application definition
