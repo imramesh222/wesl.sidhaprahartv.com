@@ -3,7 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django import forms
 from django.urls import reverse
-from .models import Notice, Career
+from django.core.paginator import Paginator
+from django.db.models import Q
+from .models import Notice, Career, CareerApplication
 from .forms import NoticeForm, CareerForm
 
 @login_required
@@ -117,3 +119,53 @@ def admin_delete_career(request, pk):
         'cancel_url': 'admin_career_list'
     })
 
+@login_required
+def admin_career_application_list(request):
+    applications = CareerApplication.objects.select_related('career').order_by('-applied_at')
+    
+    # Search functionality
+    search_query = request.GET.get('q', '')
+    if search_query:
+        applications = applications.filter(
+            Q(full_name__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(phone__icontains=search_query) |
+            Q(career__title__icontains=search_query)
+        )
+    
+    # Filter by view status
+    view_status = request.GET.get('view_status', '')
+    if view_status == 'viewed':
+        applications = applications.filter(is_viewed=True)
+    elif view_status == 'unviewed':
+        applications = applications.filter(is_viewed=False)
+    
+    # Pagination
+    paginator = Paginator(applications, 20)  # Show 20 applications per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'title': 'Career Applications',
+        'applications': page_obj,
+        'search_query': search_query,
+        'view_status': view_status,
+        'total_applications': applications.count(),
+    }
+    
+    return render(request, 'dashboard/career/application_list.html', context)
+
+
+@login_required
+def mark_application_viewed(request, pk):
+    if request.method == 'POST':
+        from django.http import JsonResponse
+        try:
+            application = CareerApplication.objects.get(pk=pk)
+            if not application.is_viewed:
+                application.is_viewed = True
+                application.save()
+            return JsonResponse({'success': True})
+        except CareerApplication.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Application not found'}, status=404)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)

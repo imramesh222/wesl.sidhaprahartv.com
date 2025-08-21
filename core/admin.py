@@ -47,6 +47,35 @@ class TeamMemberAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+@admin.register(models.Career)
+class CareerAdmin(admin.ModelAdmin):
+    list_display = ('title', 'opening_date', 'closing_date')
+    search_fields = ('title', 'opening_date', 'closing_date')
+    list_filter = ('opening_date', 'closing_date')
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'opening_date', 'closing_date', 'description')
+        }),
+    )
+
+
+
+@admin.register(models.CareerApplication)
+class CareerApplicationAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'career', 'applied_at', 'is_viewed')
+    list_filter = ('is_viewed', 'career', 'applied_at')
+    search_fields = ('full_name', 'email', 'phone', 'career__title')
+    readonly_fields = ('applied_at',)
+    list_per_page = 20
+    date_hierarchy = 'applied_at'
+    
+    def mark_as_viewed(self, request, queryset):
+        queryset.update(is_viewed=True)
+    mark_as_viewed.short_description = 'Mark selected applications as viewed'
+    
+    actions = [mark_as_viewed]
+
 admin.site.register(models.Testimonial)
 admin.site.register(models.Report)
 admin.site.register(models.Download)

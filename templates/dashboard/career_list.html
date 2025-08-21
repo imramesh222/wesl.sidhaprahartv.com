@@ -1,11 +1,11 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'admin_base.html' %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Career Opportunities</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="{% url 'dashboard:admin_add_career' %}" class="btn btn-sm btn-outline-primary">
+            <a href="{% url 'admin_add_career' %}" class="btn btn-sm btn-outline-primary">
                 <i class="fas fa-plus"></i> Add New Career
             </a>
         </div>
@@ -37,10 +37,10 @@
                     <td>{{ career.opening_date|date:"M d, Y" }}</td>
                     <td>{{ career.closing_date|date:"M d, Y" }}</td>
                     <td>
-                        <a href="{% url 'dashboard:admin_edit_career' career.pk %}" class="btn btn-sm btn-outline-primary">
+                        <a href="{% url 'admin_edit_career' career.pk %}" class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <a href="{% url 'dashboard:admin_delete_career' career.pk %}" class="btn btn-sm btn-outline-danger">
+                        <a href="{% url 'admin_delete_career' career.pk %}" class="btn btn-sm btn-outline-danger">
                             <i class="fas fa-trash"></i> Delete
                         </a>
                     </td>

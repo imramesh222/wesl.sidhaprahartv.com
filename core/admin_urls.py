@@ -1,7 +1,9 @@
 from django.urls import path
 from . import admin_views
 from .dashboard_views import (
-    admin_notice_list, admin_add_notice, admin_edit_notice, admin_delete_notice
+    admin_notice_list, admin_add_notice, admin_edit_notice, admin_delete_notice,
+    admin_career_list, admin_add_career, admin_edit_career, admin_delete_career,
+    admin_career_application_list, mark_application_viewed
 )
 
 urlpatterns = [
@@ -92,6 +94,14 @@ urlpatterns = [
     path('admin_notices/add/', admin_add_notice, name='admin_add_notice'),
     path('admin_notices/edit/<int:pk>/', admin_edit_notice, name='admin_edit_notice'),
     path('admin_notices/delete/<int:pk>/', admin_delete_notice, name='admin_delete_notice'),
+
+    # Career Management
+    path('careers/', admin_career_list, name='admin_career_list'),
+    path('careers/add/', admin_add_career, name='admin_add_career'),
+    path('careers/edit/<int:pk>/', admin_edit_career, name='admin_edit_career'),
+    path('careers/delete/<int:pk>/', admin_delete_career, name='admin_delete_career'),
+    path('careers/applications/', admin_career_application_list, name='admin_career_application_list'),
+    path('careers/applications/<int:pk>/mark-viewed/', mark_application_viewed, name='mark_application_viewed'),
 
     # CLIENTS
     path('clients/', admin_views.client_list, name='client_list'),

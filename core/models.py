@@ -152,23 +152,6 @@ class Report(models.Model):
     def __str__(self):
         return self.title
 
-class Notice(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    image = models.ImageField(upload_to='notices/images/', blank=True, null=True)
-    attachment = models.FileField(upload_to='notices/attachments/', blank=True, null=True)
-    published_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True, help_text='Uncheck to hide this notice from the website')
-
-    class Meta:
-        ordering = ['-published_at']
-        verbose_name = 'Notice'
-        verbose_name_plural = 'Notices'
-
-    def __str__(self):
-        return f"{self.title} (Published: {self.published_at.strftime('%Y-%m-%d')})"
-
-
 class Client(models.Model):
     name = models.CharField(max_length=200)
     logo = models.ImageField(upload_to='clients/')
@@ -250,6 +233,25 @@ class OrganizationContent(models.Model):
         return "Organizational Content"    
 
 
+
+class Notice(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='notices/images/', blank=True, null=True)
+    attachment = models.FileField(upload_to='notices/attachments/', blank=True, null=True)
+    published_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True, help_text='Uncheck to hide this notice from the website')
+
+    class Meta:
+        ordering = ['-published_at']
+        verbose_name = 'Notice'
+        verbose_name_plural = 'Notices'
+
+    def __str__(self):
+        return f"{self.title} (Published: {self.published_at.strftime('%Y-%m-%d')})"
+
+
+
 class Career(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -258,3 +260,17 @@ class Career(models.Model):
     
     def __str__(self):
         return self.title
+
+
+class CareerApplication(models.Model):
+    career = models.ForeignKey(Career, on_delete=models.CASCADE, related_name='applications')
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    resume = models.FileField(upload_to='career_applications/resumes/')
+    message = models.TextField(blank=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+    is_viewed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.career.title}"

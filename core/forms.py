@@ -159,14 +159,6 @@ class CareerApplicationForm(forms.Form):
         }),
         help_text='Upload your resume (PDF or DOCX, max 5MB)'
     )
-    cover_letter = forms.FileField(
-        required=False,
-        widget=forms.FileInput(attrs={
-            'class': 'form-control',
-            'accept': '.pdf,.doc,.docx'
-        }),
-        help_text='Upload a cover letter (optional)'
-    )
     message = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={

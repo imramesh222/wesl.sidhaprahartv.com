@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">{{ title }}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="{% url 'dashboard:admin_career_list' %}" class="btn btn-sm btn-outline-secondary">
+            <a href="{% url 'admin_career_list' %}" class="btn btn-sm btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Back to List
             </a>
         </div>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="{% url 'dashboard:admin_career_list' %}" class="btn btn-outline-secondary me-md-2">
+                    <a href="{% url 'admin_career_list' %}" class="btn btn-outline-secondary me-md-2">
                         <i class="fas fa-times"></i> Cancel
                     </a>
                     <button type="submit" class="btn btn-primary">

@@ -14,14 +14,14 @@ from .models import (
     AboutImage, AboutInfo, CarouselItem, Download, Fact,
     Feature, FeatureImage, Notice, Project, Report,
     Service, TeamMember, Testimonial, Client, NewsletterSubscriber,
-    ContactInfo, ContactMessage, OrganizationDetail
+    ContactInfo, ContactMessage, OrganizationDetail,Career
 )
 
 from .admin_forms import (
     AboutImageForm, AboutInfoForm, CarouselItemForm, DownloadForm, FactForm,
     FeatureForm, FeatureImageForm, NoticeForm, ProjectForm, ReportForm,
     ServiceForm, TeamMemberForm, TestimonialForm, ClientForm, ContactInfoForm,
-    OrganizationDetailForm
+    OrganizationDetailForm,CareerForm
 )
 
 def admin_login(request):
@@ -714,13 +714,13 @@ def admin_edit_notice(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Notice updated successfully.')
-            return redirect('notice_list')
+            return redirect('admin_notice_list')
     else:
         form = NoticeForm(instance=notice)
     return render(request, 'dashboard/generic_form.html', {
         'form': form,
         'title': 'Edit Notice',
-        'cancel_url': reverse('notice_list'),
+        'cancel_url': reverse('admin_notice_list'),
     })
 
 @login_required
@@ -729,11 +729,64 @@ def admin_delete_notice(request, pk):
     if request.method == 'POST':
         notice.delete()
         messages.success(request, 'Notice deleted successfully.')
-        return redirect('notice_list')
+        return redirect('admin_notice_list')
     return render(request, 'dashboard/confirm_delete.html', {
         'object': notice,
-        'cancel_url': reverse('notice_list'),
+        'cancel_url': reverse('admin_notice_list'),
     })
+
+
+# career
+@login_required
+def admin_career_list(request):
+    careers = Career.objects.all()
+    return render(request, 'dashboard/career_list.html', {'careers': careers})
+
+@login_required
+def admin_add_career(request):
+    if request.method == 'POST':
+        form = CareerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Career added successfully.')
+            return redirect('career_list')
+    else:
+        form = CareerForm()
+    return render(request, 'dashboard/career_form.html', {
+        'form': form,
+        'title': 'Add Career',
+        'cancel_url': reverse('admin_career_list'),
+    })
+
+@login_required
+def admin_edit_career(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    if request.method == 'POST':
+        form = CareerForm(request.POST, request.FILES, instance=career)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Career updated successfully.')
+            return redirect('admin_career_list')
+    else:
+        form = CareerForm(instance=career)
+    return render(request, 'dashboard/career_form.html', {
+        'form': form,
+        'title': 'Edit Career',
+        'cancel_url': reverse('admin_career_list'),
+    })
+
+@login_required
+def admin_delete_career(request, pk):
+    career = get_object_or_404(Career, pk=pk)
+    if request.method == 'POST':
+        career.delete()
+        messages.success(request, 'Career deleted successfully.')
+        return redirect('admin_career_list')
+    return render(request, 'dashboard/confirm_delete.html', {
+        'object': career,
+        'cancel_url': reverse('admin_career_list'),
+    })
+
 
 # CLIENT
 
@@ -986,4 +1039,5 @@ def edit_organization_content(request):
     else:
         form = OrganizationContentForm(instance=content)
     return render(request, 'dashboard/edit_organization_content.html', {'form': form})
+
 

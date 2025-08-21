@@ -1,13 +1,13 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from core.admin_forms import TeamMemberForm
 from .models import (
-    Career, ContactInfo, ContactMessage, CarouselItem, AboutImage, AboutInfo,
+    Career, CareerApplication, ContactInfo, ContactMessage, CarouselItem, AboutImage, AboutInfo,
     Fact, Feature, Service, Project, TeamMember, Testimonial, FeatureImage,
     Report, Download, Notice, Client, NewsletterSubscriber, OrganizationContent,
     Photo, Video, KeyInfo
 )
-from .forms import PhotoForm, VideoForm
+from .forms import PhotoForm, VideoForm, CareerApplicationForm
 from .forms import ContactForm
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -276,12 +276,26 @@ def career_apply(request, pk):
     career = get_object_or_404(Career, pk=pk)
     
     if request.method == 'POST':
-        # Handle file upload and application submission
-        # You'll need to create a form for application submission
-        # and handle the file uploads appropriately
-        pass
+        form = CareerApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Create a new CareerApplication instance
+            CareerApplication.objects.create(
+                career=career,
+                full_name=form.cleaned_data['full_name'],
+                email=form.cleaned_data['email'],
+                phone=form.cleaned_data['phone'],
+                resume=form.cleaned_data['resume'],
+                message=form.cleaned_data.get('message', '')
+            )
+            messages.success(request, 'Your application has been submitted successfully!')
+            return redirect('career_list')
+    else:
+        form = CareerApplicationForm()
     
-    return render(request, 'career/apply.html', {'career': career})
+    return render(request, 'career/apply.html', {
+        'career': career,
+        'form': form
+    })
 
 # Team Views
 def team_list(request):

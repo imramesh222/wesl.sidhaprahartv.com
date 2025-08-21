@@ -1,6 +1,6 @@
 from django import forms
 from .models import (
-    AboutInfo, AboutImage, Fact,
+    AboutInfo, AboutImage, Career, Fact,
     CarouselItem,
     Feature, FeatureImage,
     Service, Project,
@@ -188,3 +188,19 @@ class OrganizationDetailForm(forms.ModelForm):
             'linkedin': forms.URLInput(attrs={'placeholder': 'LinkedIn URL'}),
         }
 
+class CareerForm(forms.ModelForm):
+    class Meta:
+        model = Career
+        fields = ['title', 'description', 'opening_date', 'closing_date']
+        widgets = {
+            'opening_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'closing_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
+        help_texts = {
+            'title': 'Enter a title for this career position',
+            'description': 'Enter a detailed description of the career position',
+            'opening_date': 'Date when applications open',
+            'closing_date': 'Deadline for applications',
+        }

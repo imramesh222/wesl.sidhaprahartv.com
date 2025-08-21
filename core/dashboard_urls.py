@@ -15,4 +15,6 @@ urlpatterns = [
     path('careers/add/', dashboard_views.admin_add_career, name='admin_add_career'),
     path('careers/edit/<int:pk>/', dashboard_views.admin_edit_career, name='admin_edit_career'),
     path('careers/delete/<int:pk>/', dashboard_views.admin_delete_career, name='admin_delete_career'),
+    path('careers/applications/', dashboard_views.admin_career_application_list, name='admin_career_application_list'),
+    path('careers/applications/<int:pk>/mark-viewed/', dashboard_views.mark_application_viewed, name='mark_application_viewed'),
 ]
